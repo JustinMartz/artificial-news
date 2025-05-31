@@ -32,6 +32,12 @@ public class ArticleController {
 
   @GetMapping
   public ResponseEntity<List<Article>> getAllArticles() {
-    return null;
+    List<Article> articles = articleService.getAllArticles();
+
+    if (articles == null || articles.size() == 0) {
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.ok().body(articles);
+    }
   }
 }
