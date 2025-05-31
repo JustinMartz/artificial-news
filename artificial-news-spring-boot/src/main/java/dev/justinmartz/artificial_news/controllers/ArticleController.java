@@ -6,6 +6,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,5 +28,10 @@ public class ArticleController {
   public ResponseEntity<Article> getArticleById(@PathVariable UUID id) {
     Article article = articleService.getArticleById(id);
     return ResponseEntity.ok().body(article);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Article>> getAllArticles() {
+    return null;
   }
 }
