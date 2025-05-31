@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -211,6 +212,14 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public Article getArticleById(UUID id) {
     return articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
+  }
+
+  @Override
+  public List<Article> getAllArticles() {
+    List<Article> articles = new ArrayList<>();
+    articles = articleRepository.findAll();
+    
+    return articles;
   }
 
   private String generateAuthorPhoto(String author) throws RestClientException, IOException {

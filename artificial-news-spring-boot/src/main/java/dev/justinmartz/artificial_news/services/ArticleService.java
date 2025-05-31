@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import dev.justinmartz.artificial_news.entities.Article;
 import org.springframework.ai.chat.model.ChatResponse;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,4 +13,5 @@ public interface ArticleService {
     String generateTopic();
     Map<String, String> generateText(String topic) throws JsonProcessingException;
     Article getArticleById(UUID id);
+    List<Article> getAllArticles();
 }
