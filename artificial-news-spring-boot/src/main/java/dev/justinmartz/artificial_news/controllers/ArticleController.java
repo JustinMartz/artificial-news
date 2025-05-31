@@ -3,6 +3,8 @@ package dev.justinmartz.artificial_news.controllers;
 import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.services.ArticleService;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +33,9 @@ public class ArticleController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Article>> getAllArticles() {
-    List<Article> articles = articleService.getAllArticles();
+  public Page<Article> getAllArticles(Pageable pageable) {
+    Page<Article> articles = articleService.getAllArticles(pageable);
 
-    if (articles == null || articles.size() == 0) {
-      return ResponseEntity.noContent().build();
-    } else {
-      return ResponseEntity.ok().body(articles);
-    }
+    return articles;
   }
 }

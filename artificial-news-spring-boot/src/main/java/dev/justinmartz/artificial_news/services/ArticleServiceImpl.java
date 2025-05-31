@@ -24,6 +24,7 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.openai.api.ResponseFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
@@ -216,11 +217,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> getAllArticles() {
-    List<Article> articles = new ArrayList<>();
-    articles = articleRepository.findAll();
-
-//    Page<Article> pagedResponse = articles.
+  public Page<Article> getAllArticles(Pageable pageable) {
+    Page<Article> articles = articleRepository.findAll(pageable);
 
     return articles;
   }
