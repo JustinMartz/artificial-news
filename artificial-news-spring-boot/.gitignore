@@ -5,6 +5,12 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 /src/main/resources/static/assets/
+!/src/main/resources/static/assets/Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png
+!/src/main/resources/static/assets/Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png
+!/src/main/resources/static/assets/Lila-Ellis-1749393805761.png
+!/src/main/resources/static/assets/Naomi-Fernandez-1749392212194.png
+!/src/main/resources/static/assets/Samantha-Lin-1749393518091.png
+!/src/main/resources/static/assets/Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png
 
 ### STS ###
 .apt_generated
