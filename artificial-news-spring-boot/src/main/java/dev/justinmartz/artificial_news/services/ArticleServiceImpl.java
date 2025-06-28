@@ -25,6 +25,7 @@ import org.springframework.ai.openai.api.ResponseFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
@@ -60,6 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
+  @Async
   public Article createArticle() {
     Map<String, String> articleMap;
     Article article = new Article();
@@ -95,11 +97,9 @@ public class ArticleServiceImpl implements ArticleService {
                 }
               });
 
-      // Wait for both futures to complete
       String authorPhoto = authorPhotoFuture.get();
       String articlePhoto = articlePhotoFuture.get();
 
-      // Set the results
       article.setAuthorPhoto(authorPhoto);
       article.setArticlePhoto(articlePhoto);
 

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Configuration
 @ConditionalOnProperty(name = "test-data.enabled", havingValue = "true")
@@ -30,7 +29,7 @@ public class LoadDatabase {
     };
   }
 
-  List<Article> buildTestArticles() {
+  private List<Article> buildTestArticles() {
     Article article1 = new Article(), article2 = new Article(), article3 = new Article();
 
     article1.setCreatedAt(LocalDateTime.parse("2025-06-08T08:16:54.519613"));

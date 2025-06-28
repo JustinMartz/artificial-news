@@ -2,14 +2,11 @@ package dev.justinmartz.artificial_news.controllers;
 
 import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.services.ArticleService;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @RestController

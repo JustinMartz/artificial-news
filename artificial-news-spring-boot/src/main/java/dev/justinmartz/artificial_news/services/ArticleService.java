@@ -2,7 +2,6 @@ package dev.justinmartz.artificial_news.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dev.justinmartz.artificial_news.entities.Article;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
