@@ -1,4 +1,3 @@
-
 import LinkButton from './LinkButton';
 
 const Pagination = ({
@@ -19,22 +18,24 @@ const Pagination = ({
   changePage: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const onClick = (direction: 'previous' | 'next') => {
-    console.log('function called');
-    // if direction === "next" && last == false
     if (direction === 'next' && isLastPage == false) {
       changePage(pageNumber + 1);
     }
 
-    // if user hits previous and first is false
     if (direction === 'previous' && isFirstPage === false) {
       changePage(pageNumber - 1);
     }
   };
-  
+
   return (
     <div className="flex justify-between md:pb-3 md:pt-3">
       <p>
-        Showing {numberOfElements} to {pageSize} of {totalElements} result
+        Showing{' '}
+        <span className="font-bold">
+          {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
+        </span>{' '}
+        to <span className="font-bold">{(pageNumber + 1) * numberOfElements}</span> of{' '}
+        <span className="font-bold">{totalElements}</span> result
         {totalElements > 1 ? 's' : ''}
       </p>
       <div className="flex gap-x-3">
