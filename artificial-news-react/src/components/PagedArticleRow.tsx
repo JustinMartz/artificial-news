@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Article } from '../models/article';
+import { Article } from '../models/Article';
 import { differenceInCalendarDays } from 'date-fns';
 
 const PagedArticleRow = ({ article }: { article: Article }) => {
@@ -36,14 +36,14 @@ const PagedArticleRow = ({ article }: { article: Article }) => {
   return (
     <section className="cursor-pointer">
       <Link to={`${article.id}`}>
-             <div className="flex justify-between md:pb-3 md:pt-3 border-b border-gray-200 hover:bg-gray-50">
-          <div>{headline}</div>
-          <div>{abbreviatedDateline}</div>
-          <div>{daysAgo}</div>
-        </div> 
+        <div className="flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 border-b border-gray-200 hover:bg-gray-50 w-full">
+          <div className="md:w-1/2">{headline}</div>
+          <div className="md:w-1/2 flex justify-between">
+            <div className="md:w-1/2">{abbreviatedDateline}</div>
+            <div className="md:w-1/2">{daysAgo}</div>
+          </div>
+        </div>
       </Link>
-
-
     </section>
   );
 };

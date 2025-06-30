@@ -26,17 +26,22 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex justify-between md:pb-3 md:pt-3">
-      <p>
-        Showing{' '}
-        <span className="font-bold">
-          {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
-        </span>{' '}
-        to <span className="font-bold">{(pageNumber + 1) * numberOfElements}</span> of{' '}
-        <span className="font-bold">{totalElements}</span> result
-        {totalElements > 1 ? 's' : ''}
-      </p>
-      <div className="flex gap-x-3">
+    <div className="flex justify-between  md:pb-3 md:pt-3 text-sm pl-4 md:text-base md:pl-0">
+      <div className="flex pb-4">
+        <span className="h-fit self-end">
+          Showing{' '}
+          <span className="font-bold">
+            {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
+          </span>{' '}
+          to{' '}
+          <span className="font-bold">
+            {(pageNumber + 1) * numberOfElements}
+          </span>{' '}
+          of <span className="font-bold">{totalElements}</span> result
+          {totalElements > 1 ? 's' : ''}
+        </span>
+      </div>
+      <div className="flex md:gap-x-3 gap-x-2 p-4">
         <LinkButton
           buttonText="Previous"
           active={!isFirstPage}

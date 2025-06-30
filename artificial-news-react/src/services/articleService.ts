@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Article } from '../models/article'
+import { Article } from '../models/Article'
 import { useNavigate } from 'react-router'
 import { formatArticle } from '../lib/utils'
 

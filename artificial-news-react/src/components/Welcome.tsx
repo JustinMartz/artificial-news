@@ -24,7 +24,7 @@ export default function Welcome() {
                 src={phoneImage}
               />
             </section>
-            <section className="flex flex-col justify-between items-start h-auto p-2 lg:ml-4 lg:py-10 lg:pr-10 lg:w-2/3">
+            <section className="flex flex-col justify-between items-start h-auto p-2 py-0 lg:ml-4 lg:py-10 lg:pr-10 lg:w-2/3">
               <p className="text-base text-justify lg:text-start lg:text-2xl">
                 Maximizing shareholder value and optimizing projection modeling
                 can be challenging when you don't know who to trust for reliable
@@ -93,7 +93,7 @@ export default function Welcome() {
                 </ul>
               </section>
 
-            <div className="flex md:gap-x-6">
+            <div className="flex md:gap-x-6 justify-between md:justify-start pb-2 md:pb-0 w-full">
               <LinkButton
                 active={true}
                 handleClick={handleClick}
