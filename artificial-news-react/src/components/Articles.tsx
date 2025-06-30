@@ -1,16 +1,23 @@
+import { useState } from 'react';
 import { useFetchPagedArticles } from '../services/mockGetArticleService';
 import PagedArticleRow from './PagedArticleRow';
 import Pagination from './Pagination';
 
 export default function Articles() {
   // pagination info to Pagination
-  const pagedArticlesResult = useFetchPagedArticles(0, 10);
-  const { size, number, totalElements, numberOfElements } = pagedArticlesResult?.data ?? {
-    size: 0,
-    number: 0,
-    totalElements: 0,
-    numberOfElements: 0
-  };
+  const [pageNumber, setPageNumber] = useState<number>(2);
+  const [pageSize, setPageSize] = useState<number>(1);
+
+  const pagedArticlesResult = useFetchPagedArticles(pageNumber, pageSize);
+  const { size, number, totalElements, numberOfElements, first, last } =
+    pagedArticlesResult?.data ?? {
+      size: 0,
+      number: 0,
+      totalElements: 0,
+      numberOfElements: 0,
+      first: false,
+      last: false,
+    };
 
   return (
     <main className="bg-white md:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">
@@ -24,11 +31,13 @@ export default function Articles() {
         </div>
 
         <Pagination
+          pageNumber={number}
           pageSize={size}
           totalElements={totalElements}
           numberOfElements={numberOfElements}
-          previousActive={false}
-          nextActive={true}
+          isFirstPage={first}
+          isLastPage={last}
+          changePage={setPageNumber}
         />
       </article>
     </main>

@@ -87,7 +87,7 @@ async function fetchArticleById(articleId: string): Promise<Article> {
 
 export function useFetchPagedArticles(pageNumber: number, pageSize: number) {
   return useQuery<PagedArticle | undefined, Error>({
-    queryKey: ['pagedArticles'],
+    queryKey: ['pagedArticles', pageNumber],
     queryFn: () => fetchPagedArticles(pageNumber, pageSize),
   });
 }
