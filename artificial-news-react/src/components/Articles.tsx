@@ -6,10 +6,10 @@ import Pagination from './Pagination';
 export default function Articles() {
   // pagination info to Pagination
   const [pageNumber, setPageNumber] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize] = useState<number>(10);
 
   const pagedArticlesResult = useFetchPagedArticles(pageNumber, pageSize);
-  const { size, number, totalElements, numberOfElements, first, last } =
+  const { number, totalElements, numberOfElements, first, last } =
     pagedArticlesResult?.data ?? {
       size: 0,
       number: 0,
@@ -32,7 +32,6 @@ export default function Articles() {
 
         <Pagination
           pageNumber={number}
-          pageSize={size}
           totalElements={totalElements}
           numberOfElements={numberOfElements}
           isFirstPage={first}

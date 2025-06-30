@@ -70,19 +70,14 @@ export function useFetchArticleById(
 
 async function fetchArticleById(articleId: string): Promise<Article> {
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  console.log(articleId);
-  const fakeResponse: Article = {
-    id: crypto.randomUUID(),
-    dateline: '2024-10-13T18:43:07.942457',
-    creator: { articlesLeft: 2 },
-    headline: 'Fetched Article',
-    author: 'Chuck Schuldiner',
-    authorPhoto: 'Aisha-Patel-1728253853732.png',
-    articleBody: `In a sweet celebration of all things buzzing, bee enthusiasts from across the country gathered in Minneapolis for the annual Beekeeping Competition. The event, held at the Minneapolis Convention Center, showcased the best honey producers and hive designers in the industry. Attendees were abuzz with excitement as they browsed through the various exhibits and watched live demonstrations on beekeeping techniques.\n\nAmong the participants was veteran beekeeper, John Smith, who shared his passion for these pollinators, stating, "Beekeeping is not just a hobby, it's a way of life. These little creatures play a crucial role in our ecosystem, and it's an honor to care for them." Smith's dedication was evident in his award-winning honey, which impressed judges with its perfect balance of flavor and texture.\n\nThe competition not only highlighted the skill and craftsmanship of beekeepers but also aimed to raise awareness about the importance of bees in maintaining a healthy environment. With bee populations facing threats from pesticides and habitat loss, events like these serve as a reminder of the need to protect and preserve these vital insects. As the day came to a close, participants and spectators left with a newfound appreciation for the world of beekeeping and a deeper understanding of the delicate balance between humans and nature.`,
-    articlePhoto:
-      'Squirrels-Serenade-in-the-Mile-High-City-An-Opera-Unlike-Any-Other-1748281501907.png',
-  };
-  return Promise.resolve(fakeResponse);
+  const response = await fetch(
+    'http://localhost:8080/api/articles/' + articleId,
+    { method: 'GET' }
+  );
+
+  const dbArticle: Article = await response.json();
+  const formattedArticle: Article = formatArticle(dbArticle);
+  return Promise.resolve(formattedArticle);
 }
 
 export function useFetchPagedArticles(pageNumber: number, pageSize: number) {
@@ -97,7 +92,10 @@ async function fetchPagedArticles(
   pageSize: number
 ): Promise<PagedArticle | undefined> {
   const response = await fetch(
-    'http://localhost:8080/api/articles?page=' + pageNumber + '&size=' + pageSize,
+    'http://localhost:8080/api/articles?page=' +
+      pageNumber +
+      '&size=' +
+      pageSize,
     { method: 'GET' }
   );
   if (!response.ok) {

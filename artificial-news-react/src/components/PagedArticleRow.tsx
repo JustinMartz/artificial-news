@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { Article } from '../models/article';
 import { differenceInCalendarDays } from 'date-fns';
 
@@ -22,7 +23,7 @@ const PagedArticleRow = ({ article }: { article: Article }) => {
         new Date().getUTCDate()
       )
     );
-    
+
     const daysAgo = differenceInCalendarDays(today, datelineDate);
 
     if (daysAgo === 0) {
@@ -34,11 +35,15 @@ const PagedArticleRow = ({ article }: { article: Article }) => {
 
   return (
     <section className="cursor-pointer">
-      <div className="flex justify-between md:pb-3 md:pt-3 border-b border-gray-200 hover:bg-gray-50">
-        <div>{headline}</div>
-        <div>{abbreviatedDateline}</div>
-        <div>{daysAgo}</div>
-      </div>
+      <Link to={`${article.id}`}>
+             <div className="flex justify-between md:pb-3 md:pt-3 border-b border-gray-200 hover:bg-gray-50">
+          <div>{headline}</div>
+          <div>{abbreviatedDateline}</div>
+          <div>{daysAgo}</div>
+        </div> 
+      </Link>
+
+
     </section>
   );
 };
