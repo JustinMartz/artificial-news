@@ -26,7 +26,7 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex justify-between  md:pb-3 md:pt-3 text-sm pl-4 md:text-base md:pl-0">
+    <div className="flex justify-between text-sm pl-4 md:text-base md:pl-0">
       <div className="flex pb-4">
         <span className="h-fit self-end">
           Showing{' '}
@@ -41,7 +41,7 @@ const Pagination = ({
           {totalElements > 1 ? 's' : ''}
         </span>
       </div>
-      <div className="flex md:gap-x-3 gap-x-2 p-4">
+      <div className="flex md:gap-x-3 gap-x-2 p-4 md:pr-0">
         <LinkButton
           buttonText="Previous"
           active={!isFirstPage}
