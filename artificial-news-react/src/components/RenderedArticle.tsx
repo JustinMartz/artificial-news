@@ -10,6 +10,7 @@ import ArticleDateline from './ArticleDateline';
 import ArticlePhoto from './ArticlePhoto';
 import ArticleBody from './ArticleBody';
 import ArticleNotFound from './ArticleNotFound';
+import ArticleLoading from './ArticleLoading';
 
 export default function RenderedArticle() {
   const { articleId } = useParams();
@@ -29,7 +30,7 @@ export default function RenderedArticle() {
   const articleQuery = useFetchArticleById(cachedArticle, articleId ?? '');
 
   if (articleQuery.isLoading) {
-    return <h2 className="text-2xl">Article loading...</h2>;
+    return <ArticleLoading />;
   }
 
   if (articleQuery.isError) {
@@ -40,7 +41,7 @@ export default function RenderedArticle() {
     <main className="bg-white flex flex-grow md:flex-grow-0 lg:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">
       <title>{articleQuery.data?.headline}</title>
 
-      <article className="flex flex-col lg:justify-between w-screen h-fit lg:h-[75dvh] p-4 md:mb-4 md:mt-4 lg:mb-0 lg:mt-0">
+      <article className="flex flex-col lg:justify-between w-screen h-fit lg:h-[75dvh] px-4 py-2 md:mb-4 md:mt-4 lg:mb-0 lg:mt-0">
         <ArticleHeadline
           headline={articleQuery.data?.headline}
         ></ArticleHeadline>

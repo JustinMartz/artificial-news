@@ -4,7 +4,6 @@ import PagedArticleRow from './PagedArticleRow';
 import Pagination from './Pagination';
 
 export default function Articles() {
-  // pagination info to Pagination
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [pageSize] = useState<number>(10);
 
@@ -30,14 +29,16 @@ export default function Articles() {
             : null}
         </div>
 
-        <Pagination
-          pageNumber={number}
-          totalElements={totalElements}
-          numberOfElements={numberOfElements}
-          isFirstPage={first}
-          isLastPage={last}
-          changePage={setPageNumber}
-        />
+        {pagedArticlesResult.isSuccess ? (
+          <Pagination
+            pageNumber={number}
+            totalElements={totalElements}
+            numberOfElements={numberOfElements}
+            isFirstPage={first}
+            isLastPage={last}
+            changePage={setPageNumber}
+          />
+        ) : null}
       </article>
     </main>
   );
