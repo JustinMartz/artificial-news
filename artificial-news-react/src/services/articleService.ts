@@ -84,7 +84,7 @@ async function fetchPagedArticles(
   pageSize: number
 ): Promise<PagedArticle | undefined> {
   const response = await fetch(
-    '/ArtificialNews/api/articles/?page=' +
+    '/ArtificialNews/api/articles?page=' +
       pageNumber +
       '&size=' +
       pageSize,
