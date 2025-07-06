@@ -20,20 +20,20 @@ export default function ArticleLoading() {
           </div>
           <div className="flex-1 lg:ml-4 overflow-scroll animate-pulse w-full overflow-x-hidden">
             <div className="float-left h-min w-full lg:mr-4">
-              <div className="flex items-center w-1/3 mb-2 lg:mb-0 h-fit">
+              <div className="flex items-center w-full md:w-1/3 mb-2 lg:mb-0 h-fit">
                 {/* Author photo */}
-                <div className="md:size-16 rounded-full bg-gray-200"></div>
+                <div className="size-12 md:size-16 rounded-full bg-gray-200"></div>
                 {/* Author name */}
-                <div className="flex-1 md:size-5 ml-4 rounded-xs bg-gray-200"></div>
+                <div className="w-1/2 md:flex-1 size-5 md:size-5 ml-4 rounded-xs bg-gray-200"></div>
               </div>
             </div>
             {/* Text rows */}
-            <div className="md:h-16 md:ml-68 md:w-full rounded-xs bg-gray-200"></div>
-            <div className="md:h-16 md:mt-4 md:w-full rounded-xs bg-gray-200"></div>
-            <div className="md:h-16 md:mt-4 md:w-full rounded-xs bg-gray-200"></div>
-            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
-            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
-            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
+            <div className="h-12 mt-16 md:h-16 md:mt-0 md:ml-68 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="h-12 md:h-16 mt-4 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="h-12 md:h-16 mt-4 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 mt-4 w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 mt-4 w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 mt-4 w-full rounded-xs bg-gray-200"></div>
           </div>
         </div>
       </article>
