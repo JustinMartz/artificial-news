@@ -18,7 +18,7 @@ const LinkButton = ({
           <button
             className={
               active
-                ? 'border border-gray-200 bg-cyan-300 py-1 px-2 rounded-sm cursor-pointer'
+                ? 'border border-gray-200 bg-sky-400 py-1 px-2 rounded-sm cursor-pointer'
                 : 'border border-gray-200 py-1 px-2 rounded-sm'
             }
           >
@@ -30,7 +30,7 @@ const LinkButton = ({
           onClick={handleClick}
           className={
             active
-              ? 'border border-gray-200 bg-cyan-300 py-1 px-2 rounded-sm cursor-pointer'
+              ? 'border border-gray-200 bg-sky-400 py-1 px-2 rounded-sm cursor-pointer'
               : 'border border-gray-200 py-1 px-2 rounded-sm'
           }
         >
