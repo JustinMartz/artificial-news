@@ -62,7 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   @Async
-  public Article createArticle() {
+  public CompletableFuture<Article> createArticle() {
     Map<String, String> articleMap;
     Article article = new Article();
 
@@ -112,7 +112,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     if (article.isFullyInitialized()) {
       articleRepository.save(article);
-      return article;
+      return CompletableFuture.completedFuture(article);
     } else {
       throw new ArticleNotCreatedException("createArticle(), line 90", new RuntimeException());
     }
