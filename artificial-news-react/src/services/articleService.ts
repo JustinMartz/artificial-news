@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Article } from '../models/Article'
 import { useNavigate } from 'react-router'
 import { formatArticle } from '../lib/utils'
+import { PagedArticle } from '../models/PagedArticle';
 
 export function useCreateArticle() {
   const navigate = useNavigate();
@@ -71,3 +72,28 @@ async function fetchArticleById(articleId: string): Promise<Article | undefined>
   return formatArticle(article);
 }
 
+export function useFetchPagedArticles(pageNumber: number, pageSize: number) {
+  return useQuery<PagedArticle | undefined, Error>({
+    queryKey: ['pagedArticles', pageNumber],
+    queryFn: () => fetchPagedArticles(pageNumber, pageSize),
+  });
+}
+
+async function fetchPagedArticles(
+  pageNumber: number,
+  pageSize: number
+): Promise<PagedArticle | undefined> {
+  const response = await fetch(
+    '/ArtificialNews/api/articles/?page=' +
+      pageNumber +
+      '&size=' +
+      pageSize,
+    { method: 'GET' }
+  );
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const pagedArticle: PagedArticle = await response.json();
+  return pagedArticle;
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useFetchPagedArticles } from '../services/mockGetArticleService';
+import { useFetchPagedArticles } from '../services/articleService';
 import PagedArticleRow from './PagedArticleRow';
 import Pagination from './Pagination';
 
