@@ -91,6 +91,7 @@ async function fetchPagedArticles(
   pageNumber: number,
   pageSize: number
 ): Promise<PagedArticle | undefined> {
+  await new Promise((resolve) => setTimeout(resolve, 20000));
   const response = await fetch(
     'http://localhost:8080/api/articles?page=' +
       pageNumber +
