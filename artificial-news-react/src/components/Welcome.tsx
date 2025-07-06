@@ -93,20 +93,18 @@ export default function Welcome() {
                 </ul>
               </section>
 
-            <div className="flex md:gap-x-6 justify-between md:justify-start pb-2 md:pb-0 w-full">
-              <LinkButton
-                active={true}
-                handleClick={handleClick}
-                buttonText="Generate article"
-              />
-              <LinkButton
-                active={true}
-                buttonText="View articles"
-                to="articles/"
-              />
-
-            </div>
-
+              <div className="flex md:gap-x-6 justify-between md:justify-start pb-2 md:pb-0 w-full">
+                <LinkButton
+                  active={true}
+                  handleClick={handleClick}
+                  buttonText="Generate article"
+                />
+                <LinkButton
+                  active={true}
+                  buttonText="View articles"
+                  to="articles/"
+                />
+              </div>
             </section>
           </article>
         </main>
