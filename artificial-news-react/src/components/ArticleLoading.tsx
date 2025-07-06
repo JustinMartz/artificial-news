@@ -2,17 +2,38 @@ export default function ArticleLoading() {
   return (
     <main className="bg-white flex flex-grow md:flex-grow-0 md:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">
       <article className="flex flex-col lg:justify-between w-screen h-fit lg:h-[75dvh] p-4 md:py-2 md:mb-4 md:mt-4 lg:mb-0 lg:mt-0">
+        {/* Headline */}
         <section className="w-full flex gap-3 flex-col md:flex-row justify-left md:justify-center md:mt-2 animate-pulse">
-          <div className="w-1/2 md:w-1/2 size-6 md:size-6 rounded-xs bg-gray-200"></div>
+          <div className="w-1/2 md:w-3/4 size-6 md:size-6 rounded-xs bg-gray-200"></div>
           <div className="w-4/5 md:hidden size-6 rounded-xs bg-gray-200"></div>
           <div className="w-2/3 md:hidden size-6 rounded-xs bg-gray-200"></div>
         </section>
+        {/* Dateline */}
         <section className="w-full flex lg:justify-center mt-4 mb-1 md:mt-0 animate-pulse">
-          <div className="w-1/4 md:w-1/6 size-4 md:size-4 rounded-xs bg-gray-200"></div>
+          <div className="w-1/4 md:w-1/5 size-4 md:size-4 rounded-xs bg-gray-200"></div>
         </section>
-        <div className="flex flex-col lg:flex-row w-full lg:h-6/7">
-          <div className="flex items-start  lg:h-6/7 w-full py-4 lg:py-0 lg:w-1/3">
+
+        <div className="flex flex-col lg:flex-row w-full lg:h-6/7 animate-pulse">
+          <div className="flex items-start lg:h-6/7 w-full py-4 lg:py-0 lg:w-1/3">
+            {/* Article photo */}
             <div className="w-full md:w-full size-82 md:size-98 rounded-xs bg-gray-200"></div>
+          </div>
+          <div className="flex-1 lg:ml-4 overflow-scroll animate-pulse w-full overflow-x-hidden">
+            <div className="float-left h-min w-full lg:mr-4">
+              <div className="flex items-center w-1/3 mb-2 lg:mb-0 h-fit">
+                {/* Author photo */}
+                <div className="md:size-16 rounded-full bg-gray-200"></div>
+                {/* Author name */}
+                <div className="flex-1 md:size-5 ml-4 rounded-xs bg-gray-200"></div>
+              </div>
+            </div>
+            {/* Text rows */}
+            <div className="md:h-16 md:ml-68 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 md:mt-4 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 md:mt-4 md:w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
+            <div className="md:h-16 md:mt-4 w-full rounded-xs bg-gray-200"></div>
           </div>
         </div>
       </article>

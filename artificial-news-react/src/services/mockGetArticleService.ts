@@ -69,7 +69,7 @@ export function useFetchArticleById(
 }
 
 async function fetchArticleById(articleId: string): Promise<Article> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 20000));
   const response = await fetch(
     'http://localhost:8080/api/articles/' + articleId,
     { method: 'GET' }
