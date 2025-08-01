@@ -22,13 +22,7 @@ public class ArticleController {
 
   @PostMapping
   public ResponseEntity<Article> getNewArticle() {
-    try {
-      return ResponseEntity.ok().body(articleService.createArticle().get());
-    } catch (InterruptedException e) {
-      throw new ArticleNotCreatedException(e.getMessage(), e);
-    } catch (ExecutionException e) {
-      throw new ArticleNotCreatedException(e.getMessage(), e);
-    }
+    return ResponseEntity.ok().body(articleService.createArticle());
   }
 
   @GetMapping("/{id}")

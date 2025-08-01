@@ -13,6 +13,7 @@ public class Article {
   @Column(columnDefinition = "UUID")
   private UUID id;
 
+  @JsonIgnore
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
@@ -33,7 +34,6 @@ public class Article {
 
   public Article() {}
 
-  @JsonIgnore
   public boolean isFullyInitialized() {
     return this.createdAt != null
         && this.dateline != null
