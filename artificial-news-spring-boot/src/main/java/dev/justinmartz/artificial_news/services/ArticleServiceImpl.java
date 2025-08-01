@@ -23,6 +23,9 @@ import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.openai.api.ResponseFormat;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
@@ -34,6 +37,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -57,6 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
+  @Async
   public Article createArticle() {
     Map<String, String> articleMap;
     Article article = new Article();
@@ -92,11 +97,9 @@ public class ArticleServiceImpl implements ArticleService {
                 }
               });
 
-      // Wait for both futures to complete
       String authorPhoto = authorPhotoFuture.get();
       String articlePhoto = articlePhotoFuture.get();
 
-      // Set the results
       article.setAuthorPhoto(authorPhoto);
       article.setArticlePhoto(articlePhoto);
 
@@ -211,6 +214,13 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public Article getArticleById(UUID id) {
     return articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
+  }
+
+  @Override
+  public Page<Article> getAllArticles(Pageable pageable) {
+    Page<Article> articles = articleRepository.findAll(pageable);
+
+    return articles;
   }
 
   private String generateAuthorPhoto(String author) throws RestClientException, IOException {
