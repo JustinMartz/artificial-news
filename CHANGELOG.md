@@ -28,4 +28,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [service] Custom exceptions
 - [service] `dev` and `prod` Spring profiles
 
-[0.1.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.1.0...v1.1.1
+[0.2.0]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.2.0
+[0.1.0]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.1.0
