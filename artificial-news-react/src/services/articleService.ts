@@ -20,7 +20,8 @@ export function useCreateArticle() {
 }
 
 async function createArticle(): Promise<Article> {
-  const response = await fetch('/ArtificialNews/api/articles', { method: 'POST' })
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const response = await fetch(baseUrl + '/api/articles', { method: 'POST' })
   if (!response.ok) {
     throw new Error('Network response was not ok')
   }
@@ -63,7 +64,9 @@ export function useFetchArticleById(
 }
 
 async function fetchArticleById(articleId: string): Promise<Article | undefined> {
-  const response = await fetch('/ArtificialNews/api/articles/' + articleId, { method: 'GET' })
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
+  const response = await fetch(baseUrl + '/api/articles/' + articleId, { method: 'GET' })
   if (!response.ok) {
     return undefined; 
   }
@@ -83,8 +86,10 @@ async function fetchPagedArticles(
   pageNumber: number,
   pageSize: number
 ): Promise<PagedArticle | undefined> {
-  const response = await fetch(
-    '/ArtificialNews/api/articles?page=' +
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
+  const response = await fetch(baseUrl + 
+    '/api/articles?page=' +
       pageNumber +
       '&size=' +
       pageSize,

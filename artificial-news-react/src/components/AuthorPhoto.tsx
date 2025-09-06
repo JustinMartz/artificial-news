@@ -1,10 +1,12 @@
+import.meta.env.VITE_BASE_URL;
+
 export default function AuthorPhoto({
   authorPhoto,
 }: {
   authorPhoto: string | undefined;
 }) {
-  const imageUrl = `/ArtificialNews/api/photos/${authorPhoto}`;
-  // const imageUrl = `http://localhost:8080/api/photos/${authorPhoto}`
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const imageUrl = baseUrl + `/api/photos/${authorPhoto}`  
 
   return (
     <img
