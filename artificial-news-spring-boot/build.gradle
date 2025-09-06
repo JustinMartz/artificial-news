@@ -3,10 +3,12 @@ plugins {
 	id 'war'
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '7.2.1'
+
 }
 
 group = 'dev.justinmartz'
-version = '0.1.0'
+version = '0.2.0'
 
 java {
 	toolchain {
@@ -19,7 +21,7 @@ repositories {
 }
 
 ext {
-	set('springAiVersion', "1.0.0")
+	set('springAiVersion', "1.0.1")
 }
 
 dependencies {
@@ -53,6 +55,33 @@ tasks.register('bootRunDev', org.springframework.boot.gradle.tasks.run.BootRun) 
 war {
 	archiveFileName = "${archivesBaseName}.war"
 	destinationDirectory = file("../../")
+}
+
+spotless {
+    // optional: limit format enforcement to just the files changed by this feature branch
+    ratchetFrom 'origin/main'
+
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*.gradle', '.gitattributes', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        leadingSpacesToTabs()
+        endWithNewline()
+    }
+    java {
+        // don't need to set target, it is inferred from java
+
+        // apply a specific flavor of google-java-format
+        googleJavaFormat('1.28.0').aosp().reflowLongStrings().skipJavadocFormatting()
+        // fix formatting of type annotations
+        formatAnnotations()
+        // make sure every file has the following copyright header.
+        // optionally, Spotless can set copyright years by digging
+        // through git history (see "license" section below)
+        licenseHeader '/* (C)$YEAR */'
+    }
 }
 
 
