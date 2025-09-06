@@ -54,7 +54,7 @@ tasks.register('bootRunDev', org.springframework.boot.gradle.tasks.run.BootRun) 
 }
 
 tasks.named('war') {
-	archiveBaseName.set("artificial-news")
+	archiveBaseName.set("ArtificialNews")
 	archiveFileName.set("${archiveBaseName.get()}.war")
 	destinationDirectory.set(file("../../"))
 }
