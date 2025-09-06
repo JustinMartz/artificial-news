@@ -4,7 +4,6 @@ plugins {
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'com.diffplug.spotless' version '7.2.1'
-
 }
 
 group = 'dev.justinmartz'
@@ -21,15 +20,17 @@ repositories {
 }
 
 ext {
-	set('springAiVersion', "1.0.1")
+	springAiVersion = "1.0.1"
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
 	runtimeOnly 'com.h2database:h2'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -52,34 +53,28 @@ tasks.register('bootRunDev', org.springframework.boot.gradle.tasks.run.BootRun) 
 	mainClass.set('dev.justinmartz.artificial_news.ArtificialNewsApplication')
 }
 
-war {
-	archiveFileName = "${archivesBaseName}.war"
-	destinationDirectory = file("../../")
+tasks.named('war') {
+	archiveBaseName.set("artificial-news")
+	archiveFileName.set("${archiveBaseName.get()}.war")
+	destinationDirectory.set(file("../../"))
 }
 
 spotless {
-	// optional: limit format enforcement to just the files changed by this feature branch
 	ratchetFrom 'origin/main'
 
 	format 'misc', {
-		// define the files to apply `misc` to
 		target '*.gradle', '.gitattributes', '.gitignore'
-
-		// define the steps to apply to those files
 		trimTrailingWhitespace()
 		leadingSpacesToTabs()
 		endWithNewline()
 	}
-	java {
-		// don't need to set target, it is inferred from java
 
-		// apply a specific flavor of google-java-format
-		googleJavaFormat('1.28.0').aosp().reflowLongStrings().skipJavadocFormatting()
-		// fix formatting of type annotations
+	java {
+		googleJavaFormat('1.28.0')
+				.aosp()
+				.reflowLongStrings()
+				.skipJavadocFormatting()
 		formatAnnotations()
-		// make sure every file has the following copyright header.
-		// optionally, Spotless can set copyright years by digging
-		// through git history (see "license" section below)
 		licenseHeader '/* (C)$YEAR */'
 	}
 }
