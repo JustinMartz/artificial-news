@@ -70,9 +70,9 @@ spotless {
 	}
 
 	java {
-        importOrder()
-        removeUnusedImports()
-        removeWildcardImports()
+		importOrder()
+		removeUnusedImports()
+		removeWildcardImports()
 		googleJavaFormat('1.28.0')
 				.aosp()
 				.reflowLongStrings()
