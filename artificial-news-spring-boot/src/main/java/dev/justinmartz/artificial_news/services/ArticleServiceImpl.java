@@ -141,7 +141,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     ChatResponse response = chatModel.call(prompt);
 
-    return response.getResult().getOutput().toString();
+    return response.getResult().getOutput().toString()
   }
 
   @Override
