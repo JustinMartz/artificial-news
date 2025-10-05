@@ -3,10 +3,11 @@ plugins {
 	id 'war'
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.diffplug.spotless' version '7.2.1'
 }
 
 group = 'dev.justinmartz'
-version = '0.1.0'
+version = '0.2.0'
 
 java {
 	toolchain {
@@ -19,15 +20,17 @@ repositories {
 }
 
 ext {
-	set('springAiVersion', "1.0.0")
+	springAiVersion = "1.0.1"
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
 	runtimeOnly 'com.h2database:h2'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -50,9 +53,30 @@ tasks.register('bootRunDev', org.springframework.boot.gradle.tasks.run.BootRun) 
 	mainClass.set('dev.justinmartz.artificial_news.ArtificialNewsApplication')
 }
 
-war {
-	archiveFileName = "${archivesBaseName}.war"
-	destinationDirectory = file("../../")
+tasks.named('war') {
+	archiveBaseName.set("ArtificialNews")
+	archiveFileName.set("${archiveBaseName.get()}.war")
+	destinationDirectory.set(file("../../"))
 }
 
+spotless {
+	ratchetFrom 'origin/main'
 
+	format 'misc', {
+		target '*.gradle', '.gitattributes', '.gitignore'
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+
+	java {
+		importOrder()
+		removeUnusedImports()
+		removeWildcardImports()
+		googleJavaFormat('1.28.0')
+				.aosp()
+				.reflowLongStrings()
+				.skipJavadocFormatting()
+		formatAnnotations()
+	}
+}
