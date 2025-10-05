@@ -78,6 +78,5 @@ spotless {
 				.reflowLongStrings()
 				.skipJavadocFormatting()
 		formatAnnotations()
-		licenseHeader '/* (C)$YEAR */'
 	}
 }

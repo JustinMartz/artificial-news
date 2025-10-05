@@ -1,4 +1,3 @@
-/* (C)2025 */
 package dev.justinmartz.artificial_news.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import javax.imageio.ImageIO;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -31,9 +32,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.OpenAiImageModel;
 import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.openai.api.ResponseFormat;
@@ -49,28 +48,23 @@ public class ArticleServiceImpl implements ArticleService {
     @Value("${image.upload.dir}")
     private String uploadDirectory;
 
-    private final OpenAiChatModel chatModel;
-    private final OpenAiImageModel imageModel;
     private final ArticleRepository articleRepository;
+    private final AiService aiService;
+    private static final Executor imageExecutor = Executors.newFixedThreadPool(10);
 
-    public ArticleServiceImpl(
-            OpenAiChatModel openAiChatModel,
-            OpenAiImageModel openAiImageModel,
-            ArticleRepository articleRepository) {
-        chatModel = openAiChatModel;
-        imageModel = openAiImageModel;
+    public ArticleServiceImpl(ArticleRepository articleRepository, AiService aiService) {
         this.articleRepository = articleRepository;
+        this.aiService = aiService;
     }
 
     @Override
-    @Async
     public Article createArticle() {
-        Map<String, String> articleMap;
         Article article = new Article();
 
         try {
             String topic = generateTopic();
-            articleMap = generateText(topic);
+            Map<String, String> articleMap = generateText(topic);
+
             article.setHeadline(articleMap.get("headline"));
             article.setAuthor(articleMap.get("author"));
             article.setArticleBody(articleMap.get("articleBody"));
@@ -84,10 +78,11 @@ public class ArticleServiceImpl implements ArticleService {
                             () -> {
                                 try {
                                     return generateAuthorPhoto(article.getAuthor());
-                                } catch (RestClientException | IOException e) {
-                                    throw new RuntimeException(e);
+                                } catch (CompletionException e) {
+                                    throw new CompletionException(e);
                                 }
-                            });
+                            },
+                            imageExecutor);
 
             CompletableFuture<String> articlePhotoFuture =
                     CompletableFuture.supplyAsync(
@@ -95,18 +90,19 @@ public class ArticleServiceImpl implements ArticleService {
                                 try {
                                     return generateArticlePhoto(article.getHeadline());
                                 } catch (RestClientException | IOException e) {
-                                    throw new RuntimeException(e);
+                                    throw new CompletionException(e);
                                 }
-                            });
+                            },
+                            imageExecutor);
 
-            String authorPhoto = authorPhotoFuture.get();
-            String articlePhoto = articlePhotoFuture.get();
+            CompletableFuture.allOf(authorPhotoFuture, articlePhotoFuture).join();
 
-            article.setAuthorPhoto(authorPhoto);
-            article.setArticlePhoto(articlePhoto);
+            article.setAuthorPhoto(authorPhotoFuture.join());
+            article.setArticlePhoto(articlePhotoFuture.join());
 
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ArticleNotCreatedException("createArticle(), line 89", e);
+        } catch (CompletionException e) {
+            throw new ArticleNotCreatedException(
+                    "createArticle(), image generation failed", e);
         }
 
         article.setCreatedAt(LocalDateTime.now());
@@ -117,7 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
             return article;
         } else {
             throw new ArticleNotCreatedException(
-                    "createArticle(), line 90", new RuntimeException());
+                    "createArticle(), article incomplete", new RuntimeException());
         }
     }
 
@@ -142,7 +138,7 @@ public class ArticleServiceImpl implements ArticleService {
                                 .temperature(0.9)
                                 .build());
 
-        ChatResponse response = chatModel.call(prompt);
+        ChatResponse response = aiService.generateTextResponse(prompt);
 
         return response.getResult().getOutput().toString();
     }
@@ -204,7 +200,7 @@ public class ArticleServiceImpl implements ArticleService {
                                                 ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
                                 .build());
 
-        ChatResponse response = chatModel.call(prompt);
+        ChatResponse response = aiService.generateTextResponse(prompt);
 
         String articleJson = response.getResult().getOutput().getText();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -228,7 +224,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articles;
     }
 
-    private String generateAuthorPhoto(String author) throws RestClientException, IOException {
+    private String generateAuthorPhoto(String author) {
         String prompt =
                 "Generate a black and white photograph of a journalist using the name "
                         + author
@@ -243,19 +239,23 @@ public class ArticleServiceImpl implements ArticleService {
                         Shot by arriflex 35 BL Camera Canon K35 Prime Lenses
                         """;
 
-        ImageResponse response =
-                imageModel.call(
-                        new ImagePrompt(
-                                prompt,
-                                OpenAiImageOptions.builder()
-                                        .model("dall-e-2")
-                                        .N(1)
-                                        .height(256)
-                                        .width(256)
-                                        .build()));
-        String url = response.getResult().getOutput().getUrl();
+        ImagePrompt imagePrompt =
+                new ImagePrompt(
+                        prompt,
+                        OpenAiImageOptions.builder()
+                                .model("dall-e-2")
+                                .N(1)
+                                .height(256)
+                                .width(256)
+                                .build());
 
-        return fetchAndSaveAuthorPhoto(url, author);
+        try {
+            ImageResponse imageResponse = aiService.generateImageResponseAsync(imagePrompt).get();
+            String url = imageResponse.getResult().getOutput().getUrl();
+            return fetchAndSaveAuthorPhoto(url, author);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String fetchAndSaveAuthorPhoto(String url, String author) throws IOException {
@@ -288,21 +288,25 @@ public class ArticleServiceImpl implements ArticleService {
                          Subjects in the photograph are in focus and not blurry.
                         """;
 
-        ImageResponse response =
-                imageModel.call(
-                        new ImagePrompt(
-                                prompt,
-                                OpenAiImageOptions.builder()
-                                        .model("dall-e-3")
-                                        .quality("standard")
-                                        .style("natural")
-                                        .N(1)
-                                        .responseFormat("b64_json")
-                                        .build()));
+        ImagePrompt imagePrompt =
+                new ImagePrompt(
+                        prompt,
+                        OpenAiImageOptions.builder()
+                                .model("dall-e-3")
+                                .quality("standard")
+                                .style("natural")
+                                .N(1)
+                                .responseFormat("b64_json")
+                                .build());
 
-        String base64Image = response.getResult().getOutput().getB64Json();
-
-        return fetchAndSaveArticlePhoto(base64Image, headline);
+        try {
+            ImageResponse imageResponse = aiService.generateImageResponseAsync(imagePrompt).get();
+            String url = imageResponse.getResult().getOutput().getUrl();
+            String base64Image = imageResponse.getResult().getOutput().getB64Json();
+            return fetchAndSaveArticlePhoto(base64Image, headline);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String fetchAndSaveArticlePhoto(String base64Image, String headline)
