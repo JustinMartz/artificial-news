@@ -31,8 +31,8 @@ public class LoadDatabase {
     private List<Article> buildTestArticles() {
         Article article1 = new Article(), article2 = new Article(), article3 = new Article();
 
-        article1.setCreatedAt(LocalDateTime.parse("2025-06-08T08:16:54.519613"));
-        article1.setDateline("June 8, 2025 • 8:16 AM");
+        article1.setCreatedAt(LocalDateTime.parse("2025-10-12T08:16:54.519613"));
+        article1.setDateline("October 12, 2025 • 8:16 AM");
         article1.setHeadline(
                 "Giraffes Take to the Streets in Seattle's Most Whimsical Marathon Yet");
         article1.setAuthor("Naomi Fernandez");
@@ -72,8 +72,8 @@ public class LoadDatabase {
         article1.setArticlePhoto(
                 "Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png");
 
-        article2.setCreatedAt(LocalDateTime.parse("2025-06-07T08:38:39.969026"));
-        article2.setDateline("June 7, 2025 • 8:38 AM");
+        article2.setCreatedAt(LocalDateTime.parse("2025-10-11T08:38:39.969026"));
+        article2.setDateline("October 11, 2025 • 8:38 AM");
         article2.setHeadline("Ghostly Delights Await at Denver's Haunted Cupcake Festival");
         article2.setAuthor("Samantha Lin");
         article2.setAuthorPhoto("Samantha-Lin-1749393518091.png");
@@ -107,8 +107,8 @@ public class LoadDatabase {
         article2.setArticlePhoto(
                 "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png");
 
-        article3.setCreatedAt(LocalDateTime.parse("2025-06-06T08:43:26.153504"));
-        article3.setDateline("June 6, 2025 • 8:43 AM");
+        article3.setCreatedAt(LocalDateTime.parse("2025-10-10T08:43:26.153504"));
+        article3.setDateline("October 10, 2025 • 8:43 AM");
         article3.setHeadline("Mystical Quilts Draw Bidders to Savannah's Eerie Auction");
         article3.setAuthor("Lila Ellis");
         article3.setAuthorPhoto("Lila-Ellis-1749393805761.png");
