@@ -43,7 +43,8 @@ const Pagination = ({
           to{' '}
           <span className="font-bold">
             {(pageNumber + 1) * numberOfElements}
-          </span>{' '}
+          </span>{' of '}
+          <span className="font-bold">{totalElements}</span>
         </>
       );
   }
