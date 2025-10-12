@@ -19,7 +19,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(ArticleRepository articleRepository) {
         List<Article> testArticles = buildTestArticles();
-            articleRepository.saveAll(testArticles);
+        articleRepository.saveAll(testArticles);
 
         return args -> {
             for (Article article : testArticles) {
