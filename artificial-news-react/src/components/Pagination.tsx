@@ -30,6 +30,7 @@ const Pagination = ({
       <div className="flex pb-4">
         <span className="h-fit self-end">
           Showing{' '}
+          {totalElements > 1 ? : null}
           <span className="font-bold">
             {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
           </span>{' '}
