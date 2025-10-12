@@ -37,10 +37,10 @@ const PagedArticleRow = ({ article }: { article: Article }) => {
     <section className="cursor-pointer">
       <Link to={`${article.id}`}>
         <div className="flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 border-b border-gray-200 hover:bg-gray-50 w-full">
-          <div className="md:w-1/2">{headline}</div>
+          <div className="md:w-1/2 truncate">{headline}</div>
           <div className="md:w-1/2 flex justify-between">
-            <div className="md:w-1/2">{abbreviatedDateline}</div>
-            <div className="md:w-1/2">{daysAgo}</div>
+            <div className="md:w-1/2 md:text-right">{abbreviatedDateline}</div>
+            <div className="md:w-1/2 md:text-right">{daysAgo}</div>
           </div>
         </div>
       </Link>
