@@ -43,7 +43,8 @@ const Pagination = ({
           to{' '}
           <span className="font-bold">
             {(pageNumber + 1) * numberOfElements}
-          </span>{' of '}
+          </span>
+          {' of '}
           <span className="font-bold">{totalElements}</span>
         </>
       );
@@ -53,9 +54,7 @@ const Pagination = ({
     <div className="flex justify-between text-sm pl-4 md:text-base md:pl-0">
       <div className="flex pb-4">
         <span className="h-fit self-end">
-          Showing{' '}
-          {showing}{' '}
-          result
+          Showing {showing} result
           {totalElements > 1 || totalElements === 0 ? 's' : ''}
         </span>
       </div>
