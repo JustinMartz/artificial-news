@@ -25,25 +25,35 @@ const Pagination = ({
     }
   };
 
+  let showing;
+
+  switch (totalElements) {
+    case 0:
+      showing = <span className="font-bold">0</span>;
+      break;
+    case 1:
+      showing = <span className="font-bold">1</span>;
+      break;
+    default:
+      showing = (
+        <>
+          <span className="font-bold">
+            {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
+          </span>{' '}
+          to{' '}
+          <span className="font-bold">
+            {(pageNumber + 1) * numberOfElements}
+          </span>{' '}
+        </>
+      );
+  }
+
   return (
     <div className="flex justify-between text-sm pl-4 md:text-base md:pl-0">
       <div className="flex pb-4">
         <span className="h-fit self-end">
           Showing{' '}
-          {totalElements > 1 ? (
-            <>
-              <span className="font-bold">
-                {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
-              </span>{' '}
-              to{' '}
-              <span className="font-bold">
-                {(pageNumber + 1) * numberOfElements}
-              </span>{' '}
-              of <span className="font-bold">{totalElements}</span>
-            </>
-          ) : (
-            <span className="font-bold">0</span>
-          )}{' '}
+          {showing}{' '}
           result
           {totalElements > 1 || totalElements === 0 ? 's' : ''}
         </span>
