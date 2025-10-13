@@ -1,4 +1,4 @@
-export interface Article {
+export default interface Article {
     id: string;
     dateline: string;
     creator: {
