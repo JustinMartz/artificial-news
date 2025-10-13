@@ -25,8 +25,8 @@ export default function Articles() {
           {pagedArticlesResult.isLoading
             ? Array(3)
                 .fill('')
-                .map(() => (
-                  <div className="flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 border-b border-gray-200 w-full animate-pulse">
+                .map((_, index) => (
+                  <div className={`flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 ${index === 2 ? "" : "border-b"} border-gray-200 w-full animate-pulse`}>
                     <div className="h-14 my-2 md:my-0 md:h-6 md:w-full rounded-xs bg-gray-200"></div>
                   </div>
                 ))
