@@ -100,8 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setArticlePhoto(articlePhotoFuture.join());
 
         } catch (CompletionException e) {
-            throw new ArticleNotCreatedException(
-                    "createArticle(), image generation failed", e);
+            throw new ArticleNotCreatedException("createArticle(), image generation failed", e);
         }
 
         article.setCreatedAt(LocalDateTime.now());

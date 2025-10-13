@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2025-xx-xx
 
+### Added
+
+- [UI] Alternating row colors for list of articles
+
+- [UI] Disabled pagination navigation buttons are now gray
+
 ### Fixed
 
 - [UI] Fixed defect where "days ago" was showing "1 day ago" for an article created today.
@@ -52,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [service] Custom exceptions
 - [service] `dev` and `prod` Spring profiles
 
+[0.3.0]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.3.0
 [0.2.2]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.2.2
 [0.2.1]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.2.1
 [0.2.0]: https://github.com/JustinMartz/artificial-news/releases/tag/v0.2.0
