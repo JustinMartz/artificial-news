@@ -40,6 +40,7 @@ export default function Articles() {
                     key={index}
                     article={article}
                     isLast={isLast}
+                    isEven={index % 2 === 0}
                   />
                 );
               })
