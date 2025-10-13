@@ -22,15 +22,27 @@ export default function Articles() {
     <main className="bg-white flex flex-grow md:flex-grow-0 lg:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">
       <article className="flex flex-col justify-between w-full md:p-6 md:h-full">
         <div className="overflow-y-auto">
-          {pagedArticlesResult.isLoading ? Array(3).fill("").map(() => (
-            <div className="flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 border-b border-gray-200 w-full animate-pulse">
-              <div className="h-14 my-2 md:my-0 md:h-6 md:w-full rounded-xs bg-gray-200"></div>
-            </div>
-          )) : null}
+          {pagedArticlesResult.isLoading
+            ? Array(3)
+                .fill('')
+                .map(() => (
+                  <div className="flex flex-col md:flex-row justify-between py-2 px-4 md:pb-3 md:pt-3 border-b border-gray-200 w-full animate-pulse">
+                    <div className="h-14 my-2 md:my-0 md:h-6 md:w-full rounded-xs bg-gray-200"></div>
+                  </div>
+                ))
+            : null}
           {pagedArticlesResult.isSuccess
-            ? pagedArticlesResult.data?.content.map((article, index) => (
-                <PagedArticleRow key={index} article={article} />
-              ))
+            ? pagedArticlesResult.data?.content.map((article, index, array) => {
+                const isLast = index === array.length - 1;
+
+                return (
+                  <PagedArticleRow
+                    key={index}
+                    article={article}
+                    isLast={isLast}
+                  />
+                );
+              })
             : null}
         </div>
         {pagedArticlesResult.isSuccess ? (
