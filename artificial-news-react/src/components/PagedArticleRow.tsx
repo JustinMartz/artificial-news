@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
-import { Article } from '../models/Article';
-import { differenceInCalendarDays } from 'date-fns';
+import Article from '../models/Article';
+import { parse, startOfDay, differenceInCalendarDays } from 'date-fns';
 
 const PagedArticleRow = ({ article }: { article: Article }) => {
   const { headline, dateline } = article;
@@ -8,29 +8,15 @@ const PagedArticleRow = ({ article }: { article: Article }) => {
   const daysAgo = calculateDaysAgo(abbreviatedDateline);
 
   function calculateDaysAgo(abbreviatedDateline: string) {
-    const datelineDate = new Date(
-      Date.UTC(
-        new Date(abbreviatedDateline).getFullYear(),
-        new Date(abbreviatedDateline).getMonth(),
-        new Date(abbreviatedDateline).getDate()
-      )
+    const datelineDate = startOfDay(
+      parse(abbreviatedDateline, 'MMMM d, yyyy', new Date())
     );
 
-    const today = new Date(
-      Date.UTC(
-        new Date().getUTCFullYear(),
-        new Date().getUTCMonth(),
-        new Date().getUTCDate()
-      )
-    );
+    const today = startOfDay(new Date());
+    const diff = differenceInCalendarDays(today, datelineDate);
 
-    const daysAgo = differenceInCalendarDays(today, datelineDate);
-
-    if (daysAgo === 0) {
-      return 'Today';
-    }
-
-    return `${daysAgo} day${daysAgo > 1 ? 's' : ''} ago`;
+    if (diff === 0) return 'Today';
+    return `${diff} day${diff > 1 ? 's' : ''} ago`;
   }
 
   return (
