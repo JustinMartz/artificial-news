@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useFetchPagedArticles } from '../services/articleService';
 import PagedArticleRow from './PagedArticleRow';
 import Pagination from './Pagination';
+import { useGenerateArticle } from '../context/MutationProvider';
+import GeneratingArticleLoader from './GeneratingArticleLoader';
 
 export default function Articles() {
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [pageSize] = useState<number>(10);
+  const { isPending } = useGenerateArticle();
 
   const pagedArticlesResult = useFetchPagedArticles(pageNumber, pageSize);
   const { number, totalElements, numberOfElements, first, last } =
@@ -17,6 +20,10 @@ export default function Articles() {
       first: false,
       last: false,
     };
+
+  if (isPending) {
+    return <GeneratingArticleLoader />;
+  }
 
   return (
     <main className="bg-white flex flex-grow md:flex-grow-0 lg:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">

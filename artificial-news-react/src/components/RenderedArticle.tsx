@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Article } from '../models/Article';
+import  Article from '../models/Article';
 import { useFetchArticleById } from '../services/articleService';
 // import { useFetchArticleById } from '../services/mockGetArticleService';
 import ArticleHeadline from './ArticleHeadline';
@@ -11,11 +11,14 @@ import ArticlePhoto from './ArticlePhoto';
 import ArticleBody from './ArticleBody';
 import ArticleNotFound from './ArticleNotFound';
 import ArticleLoading from './ArticleLoading';
+import { useGenerateArticle } from '../context/MutationProvider';
+import GeneratingArticleLoader from './GeneratingArticleLoader';
 
 export default function RenderedArticle() {
   const { articleId } = useParams();
   const queryClient = useQueryClient();
   const context = useContext(AppContext);
+  const { isPending } = useGenerateArticle();
 
   if (!context) {
     throw new Error(
@@ -35,6 +38,10 @@ export default function RenderedArticle() {
 
   if (articleQuery.isError) {
     return <ArticleNotFound />;
+  }
+
+  if (isPending) {
+    return <GeneratingArticleLoader />;
   }
 
   return (

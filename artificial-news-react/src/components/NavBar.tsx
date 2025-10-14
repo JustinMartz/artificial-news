@@ -1,17 +1,14 @@
-import { useCreateArticle } from '../services/articleService';
+import { useGenerateArticle } from '../context/MutationProvider';
 import LinkButton from './LinkButton';
 
 const NavBar = () => {
-  const mutation = useCreateArticle();
-
-  function handleClick() {
-    mutation.mutate();
-  }
+const { mutate, isPending } = useGenerateArticle();
+  
   return (
     <div className="flex justify-around py-4">
       <LinkButton
-        active={true}
-        handleClick={handleClick}
+        active={!isPending}
+        handleClick={mutate}
         buttonText="Generate article"
         small
       />

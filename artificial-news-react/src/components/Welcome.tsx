@@ -1,6 +1,14 @@
 import phoneImage from '../assets/iphone-tilted-738x1238.png';
+import { useGenerateArticle } from '../context/MutationProvider';
+import GeneratingArticleLoader from './GeneratingArticleLoader';
 
 export default function Welcome() {
+  const { isPending } = useGenerateArticle();
+
+  if (isPending) {
+    return <GeneratingArticleLoader />
+  }
+
   return (
     <main className="bg-white flex flex-grow md:flex-grow-0 lg:h-[75dvh] w-11/12 md:w-4/5 rounded-md shadow-md">
       <article className="flex justify-between p-2 lg:p-4">
