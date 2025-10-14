@@ -1,5 +1,6 @@
 import '@fontsource/unifrakturcook/700.css';
 import { Link } from 'react-router';
+import NavBar from './NavBar';
 
 export default function Masthead({
   headline,
@@ -16,6 +17,7 @@ export default function Masthead({
           {headline}
         </h1>
       </Link>
+      <NavBar />
     </header>
   );
 }

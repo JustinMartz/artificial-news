@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Article } from '../models/Article'
-import { useNavigate } from 'react-router'
-import { formatArticle } from '../lib/utils'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Article from '../models/Article';
+import { useNavigate } from 'react-router';
+import { formatArticle } from '../lib/utils';
 import { PagedArticle } from '../models/PagedArticle';
 
 export function useCreateArticle() {
@@ -10,23 +10,27 @@ export function useCreateArticle() {
   return useMutation({
     mutationFn: createArticle,
     onSuccess: (data) => {
-      let articleId = data.id
+      let articleId = data.id;
       data = formatArticle(data);
-      localStorage.setItem(`${articleId}`, JSON.stringify(data))
-      queryClient.setQueryData(['article', articleId], data)
-      navigate(`/articles/${data.id}`)
+      localStorage.setItem(`${articleId}`, JSON.stringify(data));
+      queryClient.setQueryData(['article', articleId], data);
+      navigate(`/articles/${data.id}`);
     },
-  })
+  });
 }
 
 async function createArticle(): Promise<Article> {
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  const response = await fetch(baseUrl + '/api/articles', { method: 'POST' })
-  if (!response.ok) {
-    throw new Error('Network response was not ok')
+  try {
+    const response = await fetch(baseUrl + '/api/articles', { method: 'POST' });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  } catch (error: any) {
+    console.error('Network or fetch error: ', error);
+    throw new Error('Unable to reach the server. Please try again later.');
   }
-  
-  return response.json();
 }
 
 export function useFetchArticleById(
@@ -34,7 +38,7 @@ export function useFetchArticleById(
   articleId: string
 ) {
   const queryClient = useQueryClient();
-  
+
   return useQuery<Article | undefined, Error>({
     queryKey: ['article', articleId],
     queryFn: () => fetchArticleById(articleId!),
@@ -43,34 +47,38 @@ export function useFetchArticleById(
       const cachedData = queryClient.getQueryData<Article>([
         'article',
         articleId,
-      ])
+      ]);
 
       if (cachedData) {
-        return cachedData
+        return cachedData;
       }
 
-      const storedArticle = localStorage.getItem(`${articleId}`)
+      const storedArticle = localStorage.getItem(`${articleId}`);
       if (storedArticle) {
-        const parsedArticle = JSON.parse(storedArticle) as Article
-        queryClient.setQueryData(['article', articleId], parsedArticle)
+        const parsedArticle = JSON.parse(storedArticle) as Article;
+        queryClient.setQueryData(['article', articleId], parsedArticle);
 
-        return parsedArticle
+        return parsedArticle;
       }
 
-      return undefined
+      return undefined;
     },
     enabled: !cachedArticle,
-  })
+  });
 }
 
-async function fetchArticleById(articleId: string): Promise<Article | undefined> {
+async function fetchArticleById(
+  articleId: string
+): Promise<Article | undefined> {
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
-  const response = await fetch(baseUrl + '/api/articles/' + articleId, { method: 'GET' })
+  const response = await fetch(baseUrl + '/api/articles/' + articleId, {
+    method: 'GET',
+  });
   if (!response.ok) {
-    return undefined; 
+    return undefined;
   }
-  
+
   const article: Article = await response.json();
   return formatArticle(article);
 }
@@ -88,11 +96,8 @@ async function fetchPagedArticles(
 ): Promise<PagedArticle | undefined> {
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
-  const response = await fetch(baseUrl + 
-    '/api/articles?page=' +
-      pageNumber +
-      '&size=' +
-      pageSize,
+  const response = await fetch(
+    baseUrl + '/api/articles?page=' + pageNumber + '&size=' + pageSize,
     { method: 'GET' }
   );
   if (!response.ok) {
