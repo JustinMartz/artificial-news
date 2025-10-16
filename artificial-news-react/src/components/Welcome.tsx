@@ -35,7 +35,7 @@ export default function Welcome() {
 
           <section className="w-full">
             <ul className="text-base space-y-4 lg:text-xl lg:space-y-6">
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -52,7 +52,7 @@ export default function Welcome() {
                 </svg>
                 Leverage cross-functional synergies
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -69,7 +69,7 @@ export default function Welcome() {
                 </svg>
                 Optimize strategic bandwidth
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
