@@ -16,5 +16,5 @@ public interface ArticleService {
 
     Article getArticleById(UUID id);
 
-    Page<Article> getAllArticles(Pageable p);
+    Page<Article> getPagedArticles(Pageable p);
 }

@@ -34,7 +34,7 @@ public class ArticleController {
 
     @GetMapping
     public Page<Article> getAllArticles(Pageable pageable) {
-        Page<Article> articles = articleService.getAllArticles(pageable);
+        Page<Article> articles = articleService.getPagedArticles(pageable);
 
         return articles;
     }
