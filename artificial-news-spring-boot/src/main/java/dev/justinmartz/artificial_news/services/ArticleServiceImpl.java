@@ -216,7 +216,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> getAllArticles(Pageable pageable) {
+    public Page<Article> getPagedArticles(Pageable pageable) {
         Page<Article> articles = articleRepository.findAll(pageable);
 
         return articles;

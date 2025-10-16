@@ -6,7 +6,7 @@ export default function Welcome() {
   const { isPending } = useGenerateArticle();
 
   if (isPending) {
-    return <GeneratingArticleLoader />
+    return <GeneratingArticleLoader />;
   }
 
   return (
@@ -23,18 +23,19 @@ export default function Welcome() {
           <p className="text-base text-justify lg:text-start lg:text-2xl">
             Maximizing shareholder value and optimizing projection modeling can
             be challenging when you don't know who to trust for reliable data
-            points. When you need to drill down into operationalizing the
-            vision,&nbsp;
+            points.
+          </p>
+          <p className="text-base text-justify lg:text-start lg:text-2xl">
             <em>
               <strong>The Artificial News</strong>
             </em>
-            &nbsp;has you covered. Manifest an article, share it, and see what
+            &nbsp;has you covered when you need to drill down into operationalizing the vision. Manifest an article, share it, and see what
             other enterprise rockstars have created.
           </p>
 
           <section className="w-full">
             <ul className="text-base space-y-4 lg:text-xl lg:space-y-6">
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -51,7 +52,7 @@ export default function Welcome() {
                 </svg>
                 Leverage cross-functional synergies
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -68,7 +69,7 @@ export default function Welcome() {
                 </svg>
                 Optimize strategic bandwidth
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center justify-center md:justify-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

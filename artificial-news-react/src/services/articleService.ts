@@ -83,21 +83,37 @@ async function fetchArticleById(
   return formatArticle(article);
 }
 
-export function useFetchPagedArticles(pageNumber: number, pageSize: number) {
+export function useFetchPagedArticles(
+  pageNumber: number,
+  pageSize: number,
+  sortBy: string,
+  sortDirection: string
+) {
   return useQuery<PagedArticle | undefined, Error>({
     queryKey: ['pagedArticles', pageNumber],
-    queryFn: () => fetchPagedArticles(pageNumber, pageSize),
+    queryFn: () =>
+      fetchPagedArticles(pageNumber, pageSize, sortBy, sortDirection),
   });
 }
 
 async function fetchPagedArticles(
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  sortBy: string,
+  sortDirection: string
 ): Promise<PagedArticle | undefined> {
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const response = await fetch(
-    baseUrl + '/api/articles?page=' + pageNumber + '&size=' + pageSize,
+    baseUrl +
+      '/api/articles?page=' +
+      pageNumber +
+      '&size=' +
+      pageSize +
+      '&sort=' +
+      sortBy +
+      ',' +
+      sortDirection,
     { method: 'GET' }
   );
   if (!response.ok) {

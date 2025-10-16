@@ -5,12 +5,20 @@ import Pagination from './Pagination';
 import { useGenerateArticle } from '../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
 
+const SORT_BY = 'createdAt';
+const SORT_DESC = 'desc';
+
 export default function Articles() {
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [pageSize] = useState<number>(10);
   const { isPending } = useGenerateArticle();
 
-  const pagedArticlesResult = useFetchPagedArticles(pageNumber, pageSize);
+  const pagedArticlesResult = useFetchPagedArticles(
+    pageNumber,
+    pageSize,
+    SORT_BY,
+    SORT_DESC
+  );
   const { number, totalElements, numberOfElements, first, last } =
     pagedArticlesResult?.data ?? {
       size: 0,
