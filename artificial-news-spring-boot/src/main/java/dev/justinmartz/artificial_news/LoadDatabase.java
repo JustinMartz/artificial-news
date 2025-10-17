@@ -1,6 +1,8 @@
 package dev.justinmartz.artificial_news;
 
 import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticlePhoto;
+import dev.justinmartz.artificial_news.repositories.ArticlePhotoRepository;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,8 +19,11 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(ArticleRepository articleRepository) {
-        List<Article> testArticles = buildTestArticles();
+    CommandLineRunner initDatabase(
+            ArticleRepository articleRepository, ArticlePhotoRepository articlePhotoRepository) {
+        List<ArticlePhoto> testPhotos = buildTestPhotos();
+        List<Article> testArticles = buildTestArticles(testPhotos);
+
         articleRepository.saveAll(testArticles);
 
         return args -> {
@@ -28,7 +33,7 @@ public class LoadDatabase {
         };
     }
 
-    private List<Article> buildTestArticles() {
+    private List<Article> buildTestArticles(List<ArticlePhoto> testPhotos) {
         Article article1 = new Article(), article2 = new Article(), article3 = new Article();
 
         article1.setCreatedAt(LocalDateTime.parse("2025-10-12T08:16:54.519613"));
@@ -67,8 +72,7 @@ public class LoadDatabase {
                     + " optimistic about growing the event in years to come. \"This is just the"
                     + " beginning of a new tradition in Seattle,\" she exclaimed, her eyes gleaming"
                     + " with hope.");
-        article1.setArticlePhoto(
-                "Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png");
+        article1.setArticlePhoto(testPhotos.get(0));
 
         article2.setCreatedAt(LocalDateTime.parse("2025-10-11T08:38:39.969026"));
         article2.setDateline("October 11, 2025 • 8:38 AM");
@@ -100,8 +104,7 @@ public class LoadDatabase {
                     + " such a meaningful purpose,\" Caldwell added. As the festival date"
                     + " approaches, anticipation is building for what promises to be an"
                     + " unforgettable celebration of both the spooky and the sweet.");
-        article2.setArticlePhoto(
-                "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png");
+        article2.setArticlePhoto(testPhotos.get(1));
 
         article3.setCreatedAt(LocalDateTime.parse("2025-10-10T08:43:26.153504"));
         article3.setDateline("October 10, 2025 • 8:43 AM");
@@ -137,9 +140,34 @@ public class LoadDatabase {
                     + " behind.\" With all proceeds going to the preservation of local historical"
                     + " sites, the Ghostly Quilt Auction not only captivated imaginations but also"
                     + " contributed to the safeguarding of Savannah's heritage.");
-        article3.setArticlePhoto(
-                "Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png");
+        article3.setArticlePhoto(testPhotos.get(2));
 
         return List.of(article1, article2, article3);
+    }
+
+    private List<ArticlePhoto> buildTestPhotos() {
+        ArticlePhoto articlePhoto1 =
+                new ArticlePhoto()
+                        .setFilename(
+                                "Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png")
+                        .setCaption("Giraffes running around Seattle all crazy in a marathon.")
+                        .setPhotographer("John Smith");
+
+        ArticlePhoto articlePhoto2 =
+                new ArticlePhoto()
+                        .setFilename(
+                                "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png")
+                        .setCaption("Ghost and cupcakes haunt a festival in Denver.")
+                        .setPhotographer("Taylor Bugatta");
+
+        ArticlePhoto articlePhoto3 =
+                new ArticlePhoto()
+                        .setFilename(
+                                "Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png")
+                        .setCaption(
+                                "An auction house display mystical quilts and potential bidders.")
+                        .setPhotographer("Joan Malone");
+
+        return List.of(articlePhoto1, articlePhoto2, articlePhoto3);
     }
 }

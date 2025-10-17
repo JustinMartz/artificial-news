@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
@@ -59,6 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article createArticle() {
         Article article = new Article();
+        ArticlePhoto articlePhoto = new ArticlePhoto();
 
         try {
             String topic = generateTopic();
@@ -67,6 +69,10 @@ public class ArticleServiceImpl implements ArticleService {
             article.setHeadline(articleMap.get("headline"));
             article.setAuthor(articleMap.get("author"));
             article.setArticleBody(articleMap.get("articleBody"));
+            article.setArticlePhoto(
+                    articlePhoto
+                            .setCaption(articleMap.get("articlePhotoCaption"))
+                            .setPhotographer(articleMap.get("articlePhotoPhotographer")));
         } catch (JsonProcessingException | RuntimeException e) {
             throw new ArticleNotCreatedException("createArticle(), line 70", e);
         }
@@ -97,10 +103,10 @@ public class ArticleServiceImpl implements ArticleService {
             CompletableFuture.allOf(authorPhotoFuture, articlePhotoFuture).join();
 
             article.setAuthorPhoto(authorPhotoFuture.join());
-            article.setArticlePhoto(articlePhotoFuture.join());
+            article.setArticlePhoto(articlePhoto.setFilename(articlePhotoFuture.join()));
 
         } catch (CompletionException e) {
-            throw new ArticleNotCreatedException("createArticle(), image generation failed", e);
+            throw new ArticleNotCreatedException("createArticle() - image generation failed: ", e);
         }
 
         article.setCreatedAt(LocalDateTime.now());
@@ -157,12 +163,16 @@ public class ArticleServiceImpl implements ArticleService {
                 """
                 You are a helpful AI assistant that is required to fulfill the conditions of the prompt.
                 You should generate a headline, a name for the writer, and three paragraphs of an article about {topic}.
+                You should also generate a one-sentence photograph caption based on the article text and topic.
+                You should also generate a first and last name of a photographer.
                 Possibilities of writer's name include any gender and any ethnic background.
                 The headline should be catchy but professional.
                 The writing should be entertaining and informative in the style of the New York Times.
                 Write your output for the writer's name in JSON with a key called "author" for the writer.
                 Write your output for the headline in JSON with a key called "headline".
                 Write your output for all three article paragraphs in the same key called "articleBody". There should only be one "articleBody" key in the JSON output.
+                Write your output for the photograph caption in a key called "articlePhotoCaption".
+                Write your output for the photographer name in a key called "articlePhotoPhotographer".
                 Paragraphs should be separated by an escaped newline character but all contained within the same string.
                 The response is not intended for markdown and should not be escaped with backticks for JSON markdown.
                 """;
@@ -171,19 +181,25 @@ public class ArticleServiceImpl implements ArticleService {
         String jsonSchema =
 """
 {
-"type": "object",
-"properties": {
-"headline": {
-"type": "string"
-},
-"author": {
-"type": "string"
-},
-"articleBody": {
-"type": "string"
-}
-},
-"required": ["headline", "author", "articleBody"],
+    "type": "object",
+    "properties": {
+        "headline": {
+            "type": "string"
+        },
+        "author": {
+            "type": "string"
+        },
+        "articleBody": {
+            "type": "string"
+        },
+        "articlePhotoCaption": {
+            "type": "string"
+        },
+        "articlePhotoPhotographer": {
+            "type": "string"
+        }
+    },
+"required": ["headline", "author", "articleBody", "articlePhotoCaption", "articlePhotoPhotographer"],
 "additionalProperties": false
 }
 """;

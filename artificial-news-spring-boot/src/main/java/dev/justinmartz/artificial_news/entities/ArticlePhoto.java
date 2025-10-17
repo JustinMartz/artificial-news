@@ -1,18 +1,22 @@
 package dev.justinmartz.artificial_news.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@Table(name = "article_photo")
 public class ArticlePhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "UUID")
+    @JsonIgnore
     private UUID id;
 
     private String filename;
@@ -27,32 +31,36 @@ public class ArticlePhoto {
         return id;
     }
 
-    public void setId(UUID id) {
+    public ArticlePhoto setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public String getFilename() {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public ArticlePhoto setFilename(String filename) {
         this.filename = filename;
+        return this;
     }
 
     public String getCaption() {
         return caption;
     }
 
-    public void setCaption(String caption) {
+    public ArticlePhoto setCaption(String caption) {
         this.caption = caption;
+        return this;
     }
 
     public String getPhotographer() {
         return photographer;
     }
 
-    public void setPhotographer(String photographer) {
+    public ArticlePhoto setPhotographer(String photographer) {
         this.photographer = photographer;
+        return this;
     }
 
     @Override
