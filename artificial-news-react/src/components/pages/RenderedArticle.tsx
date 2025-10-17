@@ -2,17 +2,17 @@ import { useParams } from 'react-router';
 import { AppContext } from '../../context/AppContext';
 import { useContext } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import  Article from '../../models/Article';
+import Article from '../../models/Article';
 import { useFetchArticleById } from '../../services/articleService';
 // import { useFetchArticleById } from '../services/mockGetArticleService';
 import ArticleHeadline from '../article/ArticleHeadline';
 import ArticleDateline from '../article/ArticleDateline';
-import ArticlePhoto from '../article/ArticlePhoto';
 import ArticleBody from '../article/ArticleBody';
 import ArticleNotFound from '../article/ArticleNotFound';
 import ArticleLoading from '../article/ArticleLoading';
 import { useGenerateArticle } from '../../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
+import ArticlePhotoAndCaption from '../article/ArticlePhotoAndCaption';
 
 export default function RenderedArticle() {
   const { articleId } = useParams();
@@ -54,9 +54,7 @@ export default function RenderedArticle() {
         ></ArticleHeadline>
         <ArticleDateline dateline={articleQuery.data?.dateline} />
         <div className="flex flex-col lg:flex-row w-full lg:h-6/7">
-          <div className="flex items-start lg:h-6/7 w-full py-4 lg:py-0 lg:w-1/3">
-            <ArticlePhoto articlePhoto={articleQuery.data?.articlePhoto} />
-          </div>
+          <ArticlePhotoAndCaption articlePhoto={articleQuery.data?.articlePhoto} />
 
           <ArticleBody
             articleBody={articleQuery.data?.articleBody}

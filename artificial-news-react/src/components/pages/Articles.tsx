@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useFetchPagedArticles } from '../services/articleService';
+import { useFetchPagedArticles } from '../../services/articleService';
 import PagedArticleRow from './PagedArticleRow';
 import Pagination from './Pagination';
-import { useGenerateArticle } from '../context/MutationProvider';
+import { useGenerateArticle } from '../../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
 
 const SORT_BY = 'createdAt';
