@@ -1,3 +1,5 @@
+import ArticlePhoto from "./ArticlePhoto";
+
 export default interface Article {
   id: string;
   dateline: string;
@@ -8,5 +10,5 @@ export default interface Article {
   author: string;
   authorPhoto: string;
   articleBody: string;
-  articlePhoto: string;
+  articlePhoto: ArticlePhoto; 
 }

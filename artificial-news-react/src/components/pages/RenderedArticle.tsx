@@ -7,12 +7,12 @@ import { useFetchArticleById } from '../../services/articleService';
 // import { useFetchArticleById } from '../services/mockGetArticleService';
 import ArticleHeadline from '../article/ArticleHeadline';
 import ArticleDateline from '../article/ArticleDateline';
-import ArticlePhotoAndCaption from '../article/ArticlePhotoAndCaption';
 import ArticleBody from '../article/ArticleBody';
 import ArticleNotFound from '../article/ArticleNotFound';
 import ArticleLoading from '../article/ArticleLoading';
 import { useGenerateArticle } from '../../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
+import ArticlePhotoAndCaption from '../article/ArticlePhotoAndCaption';
 
 export default function RenderedArticle() {
   const { articleId } = useParams();
