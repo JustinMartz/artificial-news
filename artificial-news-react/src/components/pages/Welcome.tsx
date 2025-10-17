@@ -1,4 +1,4 @@
-import phoneImage from '../assets/iphone-tilted-738x1238.png';
+import phoneImage from '../../assets/iphone-tilted-738x1238.png';
 import { useGenerateArticle } from '../../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
 
