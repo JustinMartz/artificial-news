@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [UI] Add link to GitHub releases page
 
+- [UI] Article photos now have captions with photographer attribution
+
 ### Fixed
 
 - [UI] Fixed defect where "days ago" was showing "1 day ago" for an article created today.
