@@ -1,17 +1,17 @@
 import { useParams } from 'react-router';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '../../context/AppContext';
 import { useContext } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import  Article from '../models/Article';
-import { useFetchArticleById } from '../services/articleService';
+import  Article from '../../models/Article';
+import { useFetchArticleById } from '../../services/articleService';
 // import { useFetchArticleById } from '../services/mockGetArticleService';
-import ArticleHeadline from './ArticleHeadline';
-import ArticleDateline from './ArticleDateline';
-import ArticlePhoto from './ArticlePhoto';
-import ArticleBody from './ArticleBody';
-import ArticleNotFound from './ArticleNotFound';
-import ArticleLoading from './ArticleLoading';
-import { useGenerateArticle } from '../context/MutationProvider';
+import ArticleHeadline from '../article/ArticleHeadline';
+import ArticleDateline from '../article/ArticleDateline';
+import ArticlePhoto from '../article/ArticlePhoto';
+import ArticleBody from '../article/ArticleBody';
+import ArticleNotFound from '../article/ArticleNotFound';
+import ArticleLoading from '../article/ArticleLoading';
+import { useGenerateArticle } from '../../context/MutationProvider';
 import GeneratingArticleLoader from './GeneratingArticleLoader';
 
 export default function RenderedArticle() {

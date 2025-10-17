@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [UI] List of articles is now sorted by creation date descending
 
+- [UI] Add link to GitHub releases page
+
 ### Fixed
 
 - [UI] Fixed defect where "days ago" was showing "1 day ago" for an article created today.
