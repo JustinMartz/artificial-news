@@ -1,4 +1,4 @@
-import { Article } from "../models/Article";
+import Article from "../models/Article";
 
 export function formatArticle(article: Article): Article {
     const lines = article.articleBody.split('\n').filter(item => item.length !== 0);

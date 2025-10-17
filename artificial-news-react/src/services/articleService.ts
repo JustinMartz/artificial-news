@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Article from '../models/Article';
 import { useNavigate } from 'react-router';
 import { formatArticle } from '../lib/utils';
-import { PagedArticle } from '../models/PagedArticle';
+import PagedArticle from '../models/PagedArticle';
 
 export function useCreateArticle() {
   const navigate = useNavigate();

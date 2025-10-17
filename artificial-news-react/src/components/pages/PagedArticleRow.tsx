@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import Article from '../models/Article';
+import Article from '../../models/Article';
 import { parse, startOfDay, differenceInCalendarDays } from 'date-fns';
 
 const PagedArticleRow = ({
