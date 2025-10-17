@@ -60,7 +60,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article createArticle() {
         Article article = new Article();
-        ArticlePhoto articlePhoto = new ArticlePhoto();
+        String caption;
+        String photographer;
+        String filename;
 
         try {
             String topic = generateTopic();
@@ -69,12 +71,10 @@ public class ArticleServiceImpl implements ArticleService {
             article.setHeadline(articleMap.get("headline"));
             article.setAuthor(articleMap.get("author"));
             article.setArticleBody(articleMap.get("articleBody"));
-            article.setArticlePhoto(
-                    articlePhoto
-                            .setCaption(articleMap.get("articlePhotoCaption"))
-                            .setPhotographer(articleMap.get("articlePhotoPhotographer")));
+            caption = articleMap.get("articlePhotoCaption");
+            photographer = articleMap.get("articlePhotoPhotographer");
         } catch (JsonProcessingException | RuntimeException e) {
-            throw new ArticleNotCreatedException("createArticle(), line 70", e);
+            throw new ArticleNotCreatedException("createArticle() - text generation failed: ", e);
         }
 
         try {
@@ -103,7 +103,12 @@ public class ArticleServiceImpl implements ArticleService {
             CompletableFuture.allOf(authorPhotoFuture, articlePhotoFuture).join();
 
             article.setAuthorPhoto(authorPhotoFuture.join());
-            article.setArticlePhoto(articlePhoto.setFilename(articlePhotoFuture.join()));
+            filename = articlePhotoFuture.join();
+            article.setArticlePhoto(
+                    new ArticlePhoto()
+                            .setFilename(filename)
+                            .setCaption(caption)
+                            .setPhotographer(photographer));
 
         } catch (CompletionException e) {
             throw new ArticleNotCreatedException("createArticle() - image generation failed: ", e);
@@ -222,6 +227,9 @@ public class ArticleServiceImpl implements ArticleService {
         articleData.put("headline", jsonNode.get("headline").asText());
         articleData.put("author", jsonNode.get("author").asText());
         articleData.put("articleBody", jsonNode.get("articleBody").asText());
+        articleData.put("articlePhotoCaption", jsonNode.get("articlePhotoCaption").asText());
+        articleData.put(
+                "articlePhotoPhotographer", jsonNode.get("articlePhotoPhotographer").asText());
 
         return articleData;
     }

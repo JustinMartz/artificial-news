@@ -10,7 +10,7 @@ const ArticlePhotoAndCaption = ({
 
   return (
     <div className="flex flex-col items-start md:h-full w-full py-4 lg:py-0 lg:w-1/3">
-      <img src={imageUrl} alt="Article Image" />
+      <img src={imageUrl} alt={articlePhoto?.caption} />
       <span className="text-sm text-gray-400 mt-4">{articlePhoto?.caption}</span>
       <span className="text-xs text-gray-400 mt-4">
         {articlePhoto?.photographer}/The Artificial News
