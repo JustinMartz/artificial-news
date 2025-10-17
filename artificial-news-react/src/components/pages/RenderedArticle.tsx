@@ -7,7 +7,7 @@ import { useFetchArticleById } from '../../services/articleService';
 // import { useFetchArticleById } from '../services/mockGetArticleService';
 import ArticleHeadline from '../article/ArticleHeadline';
 import ArticleDateline from '../article/ArticleDateline';
-import ArticlePhoto from '../article/ArticlePhoto';
+import ArticlePhotoAndCaption from '../article/ArticlePhotoAndCaption';
 import ArticleBody from '../article/ArticleBody';
 import ArticleNotFound from '../article/ArticleNotFound';
 import ArticleLoading from '../article/ArticleLoading';
@@ -54,7 +54,7 @@ export default function RenderedArticle() {
         ></ArticleHeadline>
         <ArticleDateline dateline={articleQuery.data?.dateline} />
         <div className="flex flex-col lg:flex-row w-full lg:h-6/7">
-          <ArticlePhoto articlePhoto={articleQuery.data?.articlePhoto} />
+          <ArticlePhotoAndCaption articlePhoto={articleQuery.data?.articlePhoto} />
 
           <ArticleBody
             articleBody={articleQuery.data?.articleBody}
