@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Article } from '../models/Article';
+import Article from '../models/Article';
 import { useNavigate } from 'react-router';
 import { formatArticle } from '../lib/utils';
-import { PagedArticle } from '../models/PagedArticle';
+import PagedArticle from '../models/PagedArticle';
 
 export function useCreateArticle() {
   const navigate = useNavigate();
@@ -28,8 +28,13 @@ async function createArticle(): Promise<Article> {
     author: 'Aisha Patel',
     authorPhoto: 'Aisha-Patel-1728253853732.png',
     articleBody: `In a sweet celebration of all things buzzing, bee enthusiasts from across the country gathered in Minneapolis for the annual Beekeeping Competition. The event, held at the Minneapolis Convention Center, showcased the best honey producers and hive designers in the industry. Attendees were abuzz with excitement as they browsed through the various exhibits and watched live demonstrations on beekeeping techniques.\n\nAmong the participants was veteran beekeeper, John Smith, who shared his passion for these pollinators, stating, "Beekeeping is not just a hobby, it's a way of life. These little creatures play a crucial role in our ecosystem, and it's an honor to care for them." Smith's dedication was evident in his award-winning honey, which impressed judges with its perfect balance of flavor and texture.\n\nThe competition not only highlighted the skill and craftsmanship of beekeepers but also aimed to raise awareness about the importance of bees in maintaining a healthy environment. With bee populations facing threats from pesticides and habitat loss, events like these serve as a reminder of the need to protect and preserve these vital insects. As the day came to a close, participants and spectators left with a newfound appreciation for the world of beekeeping and a deeper understanding of the delicate balance between humans and nature.`,
-    articlePhoto:
-      'Squirrels-Serenade-in-the-Mile-High-City-An-Opera-Unlike-Any-Other-1748281501907.png',
+
+    articlePhoto: {
+      caption:
+        'Squirrels-Serenade-in-the-Mile-High-City-An-Opera-Unlike-Any-Other-1748281501907.png',
+      filename: 'foo.png',
+      photographer: 'Jane Doe',
+    },
   };
 
   return formatArticle(fakeResponse);

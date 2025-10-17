@@ -1,6 +1,6 @@
-import { Article } from "./Article";
+import Article from "./Article";
 
-export interface PagedArticle {
+export default interface PagedArticle {
     content: Array<Article>,
     pageable: null,
     totalPages: number,
