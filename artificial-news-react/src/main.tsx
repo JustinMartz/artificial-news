@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import App from './components/App.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import Welcome from './components/Welcome.tsx'
-import Articles from './components/Articles.tsx'
-import RenderedArticle from './components/RenderedArticle.tsx'
-import PageNotFound from './components/PageNotFound.tsx'
+import Welcome from './components/pages/Welcome.tsx'
+import Articles from './components/pages/Articles.tsx'
+import RenderedArticle from './components/pages/RenderedArticle.tsx'
+import PageNotFound from './components/pages/PageNotFound.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
