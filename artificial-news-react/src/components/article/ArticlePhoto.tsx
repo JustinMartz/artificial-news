@@ -9,10 +9,10 @@ export default function ArticlePhoto({
   return (
     <div className="flex flex-col items-start md:h-full w-full py-4 lg:py-0 lg:w-1/3">
       <img src={imageUrl} alt="Article Image" />
-      <span className="text-sm text-gray-500 mt-4">
+      <span className="text-sm text-gray-400 mt-4">
         Giraffes running around Seattle all crazy in a marathon.
       </span>
-      <span className="text-xs text-gray-500 mt-4">
+      <span className="text-xs text-gray-400 mt-4">
         John Smith/The Artificial News
       </span>
     </div>
