@@ -1,6 +1,5 @@
 package dev.justinmartz.artificial_news.services;
 
-import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,5 @@ public class ArticleServiceTest {
     void setup() {}
 
     @Test
-    void createArticle_createsNewArticleSuccessfully() {
-    }
+    void createArticle_createsNewArticleSuccessfully() {}
 }
