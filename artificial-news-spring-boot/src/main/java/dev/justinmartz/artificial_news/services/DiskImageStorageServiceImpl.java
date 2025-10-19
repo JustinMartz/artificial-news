@@ -3,7 +3,6 @@ package dev.justinmartz.artificial_news.services;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.models.Scale;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

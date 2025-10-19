@@ -6,7 +6,7 @@ const ArticlePhotoAndCaption = ({
   articlePhoto: ArticlePhoto | undefined;
 }) => {
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  const imageUrl = baseUrl + `/api/photos/${articlePhoto?.filename}`;
+  const imageUrl = baseUrl + `/api/photos/${articlePhoto?.fullsize}`;
 
   return (
     <div className="flex flex-col items-start md:h-full w-full py-4 lg:py-0 lg:w-1/3">
