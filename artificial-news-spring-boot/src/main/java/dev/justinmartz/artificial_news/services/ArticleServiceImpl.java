@@ -4,6 +4,7 @@ import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
+import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,12 +47,12 @@ public class ArticleServiceImpl implements ArticleService {
 
         String authorPhotoFilename =
                 imageStorageService.saveAuthorPhoto(authorPhotoResponse, articleMap.get("author"));
-        String articlePhotoFilename =
+        ArticlePhotoDto articlePhotoDto =
                 imageStorageService.saveArticlePhoto(
                         articlePhotoResponse, articleMap.get("headline"));
 
         Article article =
-                buildArticleFromArticleMap(articleMap, authorPhotoFilename, articlePhotoFilename);
+                buildArticleFromArticleMap(articleMap, authorPhotoFilename, articlePhotoDto);
 
         if (article.isFullyInitialized()) {
             articleRepository.save(article);
@@ -77,11 +78,12 @@ public class ArticleServiceImpl implements ArticleService {
     private Article buildArticleFromArticleMap(
             Map<String, String> articleMap,
             String authorPhotoFilename,
-            String articlePhotoFilename) {
+            ArticlePhotoDto articlePhotoDto) {
         ArticlePhoto articlePhoto = new ArticlePhoto();
         articlePhoto.setCaption(articleMap.get("articlePhotoCaption"));
         articlePhoto.setPhotographer(articleMap.get("articlePhotoPhotographer"));
-        articlePhoto.setFilename(articlePhotoFilename);
+        articlePhoto.setFullsize(articlePhotoDto.getFullsize());
+        articlePhoto.setThumbnail(articlePhotoDto.getThumbnail());
 
         Article article = new Article();
         article.setHeadline(articleMap.get("headline"));

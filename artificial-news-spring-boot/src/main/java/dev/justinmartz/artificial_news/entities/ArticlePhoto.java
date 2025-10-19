@@ -19,7 +19,9 @@ public class ArticlePhoto {
     @JsonIgnore
     private UUID id;
 
-    private String filename;
+    private String fullsize;
+
+    private String thumbnail;
 
     private String caption;
 
@@ -36,12 +38,21 @@ public class ArticlePhoto {
         return this;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFullsize() {
+        return fullsize;
     }
 
-    public ArticlePhoto setFilename(String filename) {
-        this.filename = filename;
+    public ArticlePhoto setFullsize(String fullsize) {
+        this.fullsize = fullsize;
+        return this;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public ArticlePhoto setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
         return this;
     }
 
@@ -67,13 +78,14 @@ public class ArticlePhoto {
     public boolean equals(Object o) {
         if (!(o instanceof ArticlePhoto that)) return false;
         return Objects.equals(id, that.id)
-                && Objects.equals(filename, that.filename)
+                && Objects.equals(fullsize, that.fullsize)
+                && Objects.equals(thumbnail, that.thumbnail)
                 && Objects.equals(caption, that.caption)
                 && Objects.equals(photographer, that.photographer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, filename, caption, photographer);
+        return Objects.hash(id, fullsize, thumbnail, caption, photographer);
     }
 }
