@@ -61,6 +61,7 @@ public class OpenAiServiceImpl implements AiService {
                         OpenAiImageOptions.builder()
                                 .model("dall-e-2")
                                 .N(1)
+                                .responseFormat("b64_json")
                                 .height(256)
                                 .width(256)
                                 .build());
