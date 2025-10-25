@@ -69,7 +69,7 @@ public class DiskImageStorageServiceImpl implements ImageStorageService {
         try (ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes)) {
             BufferedImage image = ImageIO.read(bis);
             if (image == null) {
-                throw new ArticleNotCreatedException("savePhoto()", new IOException());
+                throw new ArticleNotCreatedException("in saveResizedPhoto(): ", new IOException());
             }
 
             BufferedImage resizedImage =
