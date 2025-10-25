@@ -222,7 +222,7 @@ public class OpenAiServiceImpl implements AiService {
         try {
             jsonNode = objectMapper.readTree(articleJson);
         } catch (JsonProcessingException e) {
-            throw new ArticleNotCreatedException("generateText(): ", e);
+            throw new ArticleNotCreatedException("in generateText(): ", e);
         }
 
         articleData.put("headline", jsonNode.get("headline").asText());
