@@ -2,6 +2,7 @@ package dev.justinmartz.artificial_news.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,6 +17,7 @@ import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.image.ImageGeneration;
 import org.springframework.ai.image.ImageResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceImplTest {
@@ -202,6 +208,19 @@ public class ArticleServiceImplTest {
         assertEquals(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE + uuid.toString(), thrown.getMessage());
     }
 
+    @Test
+    void givenGetPagedArticles_whenCalled_thenGetsPagedArticlesFromRepository() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Article> pagedArticles = buildPagedArticles();
+
+        when(mockArticleRepository.findAll(pageable)).thenReturn(pagedArticles);
+
+        Page<Article> articles = articleService.getPagedArticles(pageable);
+
+        verify(mockArticleRepository).findAll(pageable);
+        assertSame(articles, pagedArticles);
+    }
+
     private Map<String, String> buildCompleteArticleMap(boolean isComplete) {
         Map<String, String> testArticleData = new HashMap<>();
         testArticleData.put(ARTICLE_MAP_KEY_HEADLINE, UUID.randomUUID().toString());
@@ -219,5 +238,15 @@ public class ArticleServiceImplTest {
         ImageGeneration generation = mock(ImageGeneration.class);
 
         return new ImageResponse(List.of(generation));
+    }
+
+    private Page<Article> buildPagedArticles() {
+        List<Article> articles = new ArrayList<>();
+        articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
+        articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
+
+        Page<Article> articlePage = new PageImpl<>(articles);
+
+        return articlePage;
     }
 }
