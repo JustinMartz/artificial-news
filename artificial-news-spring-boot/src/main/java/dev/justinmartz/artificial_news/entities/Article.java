@@ -58,64 +58,72 @@ public class Article {
         return id;
     }
 
-    public void setId(UUID id) {
+    public Article setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Article setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     public String getDateline() {
         return dateline;
     }
 
-    public void setDateline(String dateline) {
+    public Article setDateline(String dateline) {
         this.dateline = dateline;
+        return this;
     }
 
     public String getHeadline() {
         return headline;
     }
 
-    public void setHeadline(String headline) {
+    public Article setHeadline(String headline) {
         this.headline = headline;
+        return this;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public Article setAuthor(String author) {
         this.author = author;
+        return this;
     }
 
     public String getAuthorPhoto() {
         return authorPhoto;
     }
 
-    public void setAuthorPhoto(String authorPhoto) {
+    public Article setAuthorPhoto(String authorPhoto) {
         this.authorPhoto = authorPhoto;
+        return this;
     }
 
     public String getArticleBody() {
         return articleBody;
     }
 
-    public void setArticleBody(String articleBody) {
+    public Article setArticleBody(String articleBody) {
         this.articleBody = articleBody;
+        return this;
     }
 
     public ArticlePhoto getArticlePhoto() {
         return articlePhoto;
     }
 
-    public void setArticlePhoto(ArticlePhoto articlePhoto) {
+    public Article setArticlePhoto(ArticlePhoto articlePhoto) {
         this.articlePhoto = articlePhoto;
+        return this;
     }
 
     @Override

@@ -148,21 +148,21 @@ public class LoadDatabase {
     private List<ArticlePhoto> buildTestPhotos() {
         ArticlePhoto articlePhoto1 =
                 new ArticlePhoto()
-                        .setFilename(
+                        .setFullsize(
                                 "Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png")
                         .setCaption("Giraffes running around Seattle all crazy in a marathon.")
                         .setPhotographer("John Smith");
 
         ArticlePhoto articlePhoto2 =
                 new ArticlePhoto()
-                        .setFilename(
+                        .setFullsize(
                                 "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png")
                         .setCaption("Ghost and cupcakes haunt a festival in Denver.")
                         .setPhotographer("Taylor Bugatta");
 
         ArticlePhoto articlePhoto3 =
                 new ArticlePhoto()
-                        .setFilename(
+                        .setFullsize(
                                 "Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png")
                         .setCaption(
                                 "An auction house display mystical quilts and potential bidders.")

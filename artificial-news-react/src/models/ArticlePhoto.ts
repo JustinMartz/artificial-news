@@ -1,5 +1,6 @@
 export default interface ArticlePhoto {
-    filename: string;
+    fullsize: string;
+    thumbnail: string;
     caption: string;
     photographer: string;
 }
