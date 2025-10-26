@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,7 +31,7 @@ public class ArticleServiceImplTest {
 
     @Mock private ArticleRepository mockArticleRepository;
 
-    @Mock private OpenAiServiceImpl mockOpenAiService;
+    @Mock private OpenAiServiceImpl mockAiService;
 
     @Mock private ImageStorageService mockImageStorageService;
 
@@ -47,15 +48,15 @@ public class ArticleServiceImplTest {
             "articlePhotoPhotographer";
 
     @Test
-    void givenCreateArticle_whenCalled_thenCallsGenerateTopicAndGenerateText() {
+    void givenCreateArticle_whenCalled_thenCallsAiServiceMethods() {
         String testTopic = UUID.randomUUID().toString();
         Map<String, String> testArticleMap = buildTestArticleMap();
         ImageResponse mockImageResponse = buildTestImageResponse();
-        when(mockOpenAiService.generateTopic()).thenReturn(testTopic);
-        when(mockOpenAiService.generateText(testTopic)).thenReturn(testArticleMap);
-        when(mockOpenAiService.generateAuthorImageAsync(any()))
+        when(mockAiService.generateTopic()).thenReturn(testTopic);
+        when(mockAiService.generateText(testTopic)).thenReturn(testArticleMap);
+        when(mockAiService.generateAuthorImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR)))
                 .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
-        when(mockOpenAiService.generateArticleImageAsync(any()))
+        when(mockAiService.generateArticleImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE)))
                 .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
         when(mockImageStorageService.saveAuthorPhoto(any(), anyString()))
                 .thenReturn(UUID.randomUUID().toString());
@@ -64,8 +65,11 @@ public class ArticleServiceImplTest {
 
         Article article = articleService.createArticle();
 
-        verify(mockOpenAiService).generateTopic();
-        verify(mockOpenAiService).generateText(testTopic);
+        verify(mockAiService).generateTopic();
+        verify(mockAiService).generateText(testTopic);
+        verify(mockAiService).generateAuthorImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR));
+        verify(mockAiService)
+                .generateArticleImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE));
         assertNotNull(article);
         assertEquals(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE), article.getHeadline());
         assertEquals(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR), article.getAuthor());
@@ -76,6 +80,45 @@ public class ArticleServiceImplTest {
         assertEquals(
                 testArticleMap.get(ARTICLE_MAP_KEY_ARTICLE_PHOTO_PHOTOGRAPHER),
                 article.getArticlePhoto().getPhotographer());
+    }
+
+    @Test
+    void givenCreateArticle_whenCalled_thenCallsImageStorageServiceMethods() {
+        String authorPhotoFilename = UUID.randomUUID().toString();
+        ArticlePhotoDto testArticlePhotoDto =
+                new ArticlePhotoDto()
+                        .setFullsize(UUID.randomUUID().toString())
+                        .setThumbnail(UUID.randomUUID().toString());
+        Map<String, String> testArticleMap = buildTestArticleMap();
+        ImageResponse mockAuthorImageResponse = buildTestImageResponse();
+        ImageResponse mockArticleImageResponse = buildTestImageResponse();
+        when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
+        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateAuthorImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(mockAuthorImageResponse));
+        when(mockAiService.generateArticleImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(mockArticleImageResponse));
+        when(mockImageStorageService.saveAuthorPhoto(
+                        eq(mockAuthorImageResponse),
+                        eq(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR))))
+                .thenReturn(authorPhotoFilename);
+        when(mockImageStorageService.saveArticlePhoto(
+                        eq(mockArticleImageResponse),
+                        eq(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE))))
+                .thenReturn(testArticlePhotoDto);
+
+        Article article = articleService.createArticle();
+
+        verify(mockImageStorageService)
+                .saveArticlePhoto(
+                        mockArticleImageResponse, testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE));
+        verify(mockImageStorageService)
+                .saveAuthorPhoto(
+                        mockAuthorImageResponse, testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR));
+        assertNotNull(article);
+        assertEquals(testArticlePhotoDto.getFullsize(), article.getArticlePhoto().getFullsize());
+        assertEquals(testArticlePhotoDto.getThumbnail(), article.getArticlePhoto().getThumbnail());
+        assertEquals(authorPhotoFilename, article.getAuthorPhoto());
     }
 
     private Map<String, String> buildTestArticleMap() {
