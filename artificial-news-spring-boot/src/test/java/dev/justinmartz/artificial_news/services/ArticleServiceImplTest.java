@@ -13,11 +13,13 @@ import static org.mockito.Mockito.when;
 
 import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
+import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +53,8 @@ public class ArticleServiceImplTest {
             "articlePhotoPhotographer";
     private static final String EXCEPTION_MESSAGE =
             "Error creating article in createArticle(): Cannot save incomplete article.";
+    private static final String ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE =
+            "Could not find article with id: ";
 
     @Test
     void givenCreateArticle_whenCalled_thenCallsAiServiceMethods() {
@@ -171,6 +175,31 @@ public class ArticleServiceImplTest {
                         ArticleNotCreatedException.class, () -> articleService.createArticle());
 
         assertTrue(thrown.getMessage().contains(EXCEPTION_MESSAGE));
+    }
+
+    @Test
+    void givenGetArticleById_whenArticleFound_thenReturnsArticle() {
+        UUID uuid = UUID.randomUUID();
+        Article mockArticle = new Article();
+
+        when(mockArticleRepository.findById(uuid)).thenReturn(Optional.of(mockArticle));
+
+        Article article = articleService.getArticleById(uuid);
+
+        verify(mockArticleRepository).findById(uuid);
+        assertNotNull(article);
+    }
+
+    @Test
+    void givenGetArticleById_whenArticleNotFound_thenThrowsException() {
+        UUID uuid = UUID.randomUUID();
+
+        ArticleNotFoundException thrown =
+                assertThrows(
+                        ArticleNotFoundException.class, () -> articleService.getArticleById(uuid));
+
+        verify(mockArticleRepository).findById(uuid);
+        assertEquals(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE + uuid.toString(), thrown.getMessage());
     }
 
     private Map<String, String> buildCompleteArticleMap(boolean isComplete) {
