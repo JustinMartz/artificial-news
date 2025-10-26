@@ -9,6 +9,7 @@ import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.ai.image.ImageResponse;
@@ -59,7 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
             return article;
         } else {
             throw new ArticleNotCreatedException(
-                    "createArticle(), article incomplete", new RuntimeException());
+                    "createArticle(): Cannot save incomplete article.", new RuntimeException());
         }
     }
 
@@ -80,15 +81,26 @@ public class ArticleServiceImpl implements ArticleService {
             String authorPhotoFilename,
             ArticlePhotoDto articlePhotoDto) {
         ArticlePhoto articlePhoto = new ArticlePhoto();
-        articlePhoto.setCaption(articleMap.get("articlePhotoCaption"));
-        articlePhoto.setPhotographer(articleMap.get("articlePhotoPhotographer"));
+        articlePhoto.setCaption(
+                Objects.isNull(articleMap.get("articlePhotoCaption"))
+                        ? null
+                        : articleMap.get("articlePhotoCaption"));
+        articlePhoto.setPhotographer(
+                Objects.isNull(articleMap.get("articlePhotoPhotographer"))
+                        ? null
+                        : articleMap.get("articlePhotoPhotographer"));
         articlePhoto.setFullsize(articlePhotoDto.getFullsize());
         articlePhoto.setThumbnail(articlePhotoDto.getThumbnail());
 
         Article article = new Article();
-        article.setHeadline(articleMap.get("headline"));
-        article.setAuthor(articleMap.get("author"));
-        article.setArticleBody(articleMap.get("articleBody"));
+        article.setHeadline(
+                Objects.isNull(articleMap.get("headline")) ? null : articleMap.get("headline"));
+        article.setAuthor(
+                Objects.isNull(articleMap.get("author")) ? null : articleMap.get("author"));
+        article.setArticleBody(
+                Objects.isNull(articleMap.get("articleBody"))
+                        ? null
+                        : articleMap.get("articleBody"));
         article.setAuthorPhoto(authorPhotoFilename);
         article.setArticlePhoto(articlePhoto);
         article.setCreatedAt(LocalDateTime.now());

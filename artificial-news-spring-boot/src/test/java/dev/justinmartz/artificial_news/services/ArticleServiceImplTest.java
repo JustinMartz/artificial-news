@@ -2,6 +2,8 @@ package dev.justinmartz.artificial_news.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -10,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.util.HashMap;
@@ -46,12 +49,15 @@ public class ArticleServiceImplTest {
     private static final String ARTICLE_MAP_KEY_ARTICLE_PHOTO_CAPTION = "articlePhotoCaption";
     private static final String ARTICLE_MAP_KEY_ARTICLE_PHOTO_PHOTOGRAPHER =
             "articlePhotoPhotographer";
+    private static final String EXCEPTION_MESSAGE =
+            "Error creating article in createArticle(): Cannot save incomplete article.";
 
     @Test
     void givenCreateArticle_whenCalled_thenCallsAiServiceMethods() {
         String testTopic = UUID.randomUUID().toString();
-        Map<String, String> testArticleMap = buildTestArticleMap();
+        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
         ImageResponse mockImageResponse = buildTestImageResponse();
+
         when(mockAiService.generateTopic()).thenReturn(testTopic);
         when(mockAiService.generateText(testTopic)).thenReturn(testArticleMap);
         when(mockAiService.generateAuthorImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR)))
@@ -89,9 +95,10 @@ public class ArticleServiceImplTest {
                 new ArticlePhotoDto()
                         .setFullsize(UUID.randomUUID().toString())
                         .setThumbnail(UUID.randomUUID().toString());
-        Map<String, String> testArticleMap = buildTestArticleMap();
+        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
         ImageResponse mockAuthorImageResponse = buildTestImageResponse();
         ImageResponse mockArticleImageResponse = buildTestImageResponse();
+
         when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
         when(mockAiService.generateText(any())).thenReturn(testArticleMap);
         when(mockAiService.generateAuthorImageAsync(any()))
@@ -121,10 +128,56 @@ public class ArticleServiceImplTest {
         assertEquals(authorPhotoFilename, article.getAuthorPhoto());
     }
 
-    private Map<String, String> buildTestArticleMap() {
+    @Test
+    void givenCreateArticle_whenArticleIsFullyInitialized_thenSavesArticle() {
+        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
+        ImageResponse mockImageResponse = buildTestImageResponse();
+
+        when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
+        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateAuthorImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
+        when(mockAiService.generateArticleImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
+        when(mockImageStorageService.saveAuthorPhoto(any(), anyString()))
+                .thenReturn(UUID.randomUUID().toString());
+        when(mockImageStorageService.saveArticlePhoto(any(), anyString()))
+                .thenReturn(new ArticlePhotoDto());
+
+        Article article = articleService.createArticle();
+
+        verify(mockArticleRepository).save(article);
+        assertNotNull(article);
+        assertTrue(article.isFullyInitialized());
+    }
+
+    @Test
+    void givenCreateArticle_whenArticleIsNotFullyInitialized_thenThrowsException() {
+        Map<String, String> testArticleMap = buildCompleteArticleMap(false);
+
+        when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
+        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateAuthorImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(null));
+        when(mockAiService.generateArticleImageAsync(any()))
+                .thenReturn(CompletableFuture.completedFuture(null));
+        when(mockImageStorageService.saveAuthorPhoto(null, null))
+                .thenReturn(UUID.randomUUID().toString());
+        when(mockImageStorageService.saveArticlePhoto(any(), anyString()))
+                .thenReturn(new ArticlePhotoDto());
+
+        ArticleNotCreatedException thrown =
+                assertThrows(
+                        ArticleNotCreatedException.class, () -> articleService.createArticle());
+
+        assertTrue(thrown.getMessage().contains(EXCEPTION_MESSAGE));
+    }
+
+    private Map<String, String> buildCompleteArticleMap(boolean isComplete) {
         Map<String, String> testArticleData = new HashMap<>();
         testArticleData.put(ARTICLE_MAP_KEY_HEADLINE, UUID.randomUUID().toString());
-        testArticleData.put(ARTICLE_MAP_KEY_AUTHOR, UUID.randomUUID().toString());
+        testArticleData.put(
+                ARTICLE_MAP_KEY_AUTHOR, isComplete ? UUID.randomUUID().toString() : null);
         testArticleData.put(ARTICLE_MAP_KEY_ARTICLE_BODY, UUID.randomUUID().toString());
         testArticleData.put(ARTICLE_MAP_KEY_ARTICLE_PHOTO_CAPTION, UUID.randomUUID().toString());
         testArticleData.put(
