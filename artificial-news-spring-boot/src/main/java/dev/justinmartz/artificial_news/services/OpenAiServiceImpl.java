@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
-import java.util.HashMap;
+import dev.justinmartz.artificial_news.models.ArticleDto;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +33,14 @@ public class OpenAiServiceImpl implements AiService {
     private final OpenAiChatModel chatModel;
     private final OpenAiImageModel imageModel;
     private static final Executor imageExecutor = Executors.newFixedThreadPool(10);
+
+    private static final String JSON_KEY_HEADLINE = "headline";
+    private static final String JSON_KEY_AUTHOR = "author";
+    private static final String JSON_KEY_ARTICLE_BODY = "articleBody";
+    private static final String JSON_KEY_ARTICLE_PHOTO_CAPTION = "articlePhotoCaption";
+    private static final String JSON_KEY_ARTICLE_PHOTO_PHOTOGRAPHER = "articlePhotoPhotographer";
+    private static final String PROVIDER = "OpenAI";
+    private static final String MODEL = OpenAiApi.ChatModel.GPT_4_O.getName();
 
     public OpenAiServiceImpl(OpenAiChatModel openAiChatModel, OpenAiImageModel openAiImageModel) {
         this.chatModel = openAiChatModel;
@@ -148,8 +156,8 @@ public class OpenAiServiceImpl implements AiService {
     }
 
     @Override
-    public Map<String, String> generateText(String topic) {
-        Map<String, String> articleData = new HashMap<>();
+    public ArticleDto generateText(String topic) {
+        ArticleDto articleDto = new ArticleDto();
         String userText =
                 """
                 Give me a news article three paragraphs in length about {topic}.
@@ -218,20 +226,22 @@ public class OpenAiServiceImpl implements AiService {
         String articleJson = response.getResult().getOutput().getText();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        JsonNode jsonNode = null;
         try {
-            jsonNode = objectMapper.readTree(articleJson);
+            JsonNode jsonNode = objectMapper.readTree(articleJson);
+
+            articleDto
+                    .setHeadline(jsonNode.get(JSON_KEY_HEADLINE).asText())
+                    .setAuthor(jsonNode.get(JSON_KEY_AUTHOR).asText())
+                    .setArticleBody(jsonNode.get(JSON_KEY_ARTICLE_BODY).asText())
+                    .setArticlePhotoCaption(jsonNode.get(JSON_KEY_ARTICLE_PHOTO_CAPTION).asText())
+                    .setArticlePhotoPhotographer(
+                            jsonNode.get(JSON_KEY_ARTICLE_PHOTO_PHOTOGRAPHER).asText())
+                    .setProvider(PROVIDER)
+                    .setModel(MODEL);
+
+            return articleDto;
         } catch (JsonProcessingException e) {
-            throw new ArticleNotCreatedException("in generateText(): ", e);
+            throw new ArticleNotCreatedException("generateText(): ", e);
         }
-
-        articleData.put("headline", jsonNode.get("headline").asText());
-        articleData.put("author", jsonNode.get("author").asText());
-        articleData.put("articleBody", jsonNode.get("articleBody").asText());
-        articleData.put("articlePhotoCaption", jsonNode.get("articlePhotoCaption").asText());
-        articleData.put(
-                "articlePhotoPhotographer", jsonNode.get("articlePhotoPhotographer").asText());
-
-        return articleData;
     }
 }

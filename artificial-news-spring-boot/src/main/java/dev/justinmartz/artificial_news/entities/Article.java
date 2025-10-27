@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public class Article {
 
     @JsonIgnore
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     private String dateline;
 
@@ -41,6 +41,12 @@ public class Article {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "article_photo_id")
     private ArticlePhoto articlePhoto;
+
+    private String provider;
+
+    private String model;
+
+    private Long creationTime;
 
     public Article() {}
 
@@ -63,11 +69,11 @@ public class Article {
         return this;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Article setCreatedAt(LocalDateTime createdAt) {
+    public Article setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }

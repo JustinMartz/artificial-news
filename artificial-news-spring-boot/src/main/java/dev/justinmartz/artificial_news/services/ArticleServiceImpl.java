@@ -4,11 +4,11 @@ import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
+import dev.justinmartz.artificial_news.models.ArticleDto;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -35,25 +35,24 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article createArticle() {
         String topic = aiService.generateTopic();
-        Map<String, String> articleMap = aiService.generateText(topic);
+        ArticleDto articleDto = aiService.generateText(topic);
 
         CompletableFuture<ImageResponse> authorPhotoFuture =
-                aiService.generateAuthorImageAsync(articleMap.get("author"));
+                aiService.generateAuthorImageAsync(articleDto.getAuthor());
         CompletableFuture<ImageResponse> articlePhotoFuture =
-                aiService.generateArticleImageAsync(articleMap.get("headline"));
+                aiService.generateArticleImageAsync(articleDto.getHeadline());
         CompletableFuture.allOf(authorPhotoFuture, articlePhotoFuture).join();
 
         ImageResponse authorPhotoResponse = authorPhotoFuture.join();
         ImageResponse articlePhotoResponse = articlePhotoFuture.join();
 
         String authorPhotoFilename =
-                imageStorageService.saveAuthorPhoto(authorPhotoResponse, articleMap.get("author"));
+                imageStorageService.saveAuthorPhoto(authorPhotoResponse, articleDto.getAuthor());
         ArticlePhotoDto articlePhotoDto =
                 imageStorageService.saveArticlePhoto(
-                        articlePhotoResponse, articleMap.get("headline"));
+                        articlePhotoResponse, articleDto.getHeadline());
 
-        Article article =
-                buildArticleFromArticleMap(articleMap, authorPhotoFilename, articlePhotoDto);
+        Article article = buildArticleFromDtos(articleDto, authorPhotoFilename, articlePhotoDto);
 
         if (article.isFullyInitialized()) {
             articleRepository.save(article);
@@ -71,46 +70,43 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> getPagedArticles(Pageable pageable) {
-        Page<Article> articles = articleRepository.findAll(pageable);
-
-        return articles;
+        return articleRepository.findAll(pageable);
     }
 
-    private Article buildArticleFromArticleMap(
-            Map<String, String> articleMap,
-            String authorPhotoFilename,
-            ArticlePhotoDto articlePhotoDto) {
+    private Article buildArticleFromDtos(
+            ArticleDto articleDto, String authorPhotoFilename, ArticlePhotoDto articlePhotoDto) {
         ArticlePhoto articlePhoto = new ArticlePhoto();
-        articlePhoto.setCaption(
-                Objects.isNull(articleMap.get("articlePhotoCaption"))
-                        ? null
-                        : articleMap.get("articlePhotoCaption"));
-        articlePhoto.setPhotographer(
-                Objects.isNull(articleMap.get("articlePhotoPhotographer"))
-                        ? null
-                        : articleMap.get("articlePhotoPhotographer"));
-        articlePhoto.setFullsize(articlePhotoDto.getFullsize());
-        articlePhoto.setThumbnail(articlePhotoDto.getThumbnail());
+        articlePhoto
+                .setCaption(
+                        Objects.isNull(articleDto.getArticlePhotoCaption())
+                                ? null
+                                : articleDto.getArticlePhotoCaption())
+                .setPhotographer(
+                        Objects.isNull(articleDto.getArticlePhotoPhotographer())
+                                ? null
+                                : articleDto.getArticlePhotoPhotographer())
+                .setFullsize(articlePhotoDto.getFullsize())
+                .setThumbnail(articlePhotoDto.getThumbnail());
 
         Article article = new Article();
         article.setHeadline(
-                Objects.isNull(articleMap.get("headline")) ? null : articleMap.get("headline"));
-        article.setAuthor(
-                Objects.isNull(articleMap.get("author")) ? null : articleMap.get("author"));
-        article.setArticleBody(
-                Objects.isNull(articleMap.get("articleBody"))
-                        ? null
-                        : articleMap.get("articleBody"));
-        article.setAuthorPhoto(authorPhotoFilename);
-        article.setArticlePhoto(articlePhoto);
-        article.setCreatedAt(LocalDateTime.now());
-        article.setDateline(formatUTCtoDateline(LocalDateTime.now()));
+                        Objects.isNull(articleDto.getHeadline()) ? null : articleDto.getHeadline())
+                .setAuthor(Objects.isNull(articleDto.getAuthor()) ? null : articleDto.getAuthor())
+                .setArticleBody(
+                        Objects.isNull(articleDto.getArticleBody())
+                                ? null
+                                : articleDto.getArticleBody())
+                .setAuthorPhoto(authorPhotoFilename)
+                .setArticlePhoto(articlePhoto)
+                .setCreatedAt(OffsetDateTime.now())
+                .setDateline(formatUTCtoDateline(OffsetDateTime.now()));
 
         return article;
     }
 
-    private String formatUTCtoDateline(LocalDateTime localDateTime) {
+    private String formatUTCtoDateline(OffsetDateTime offsetDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LLLL d, yyyy • h:mm a");
-        return localDateTime.format(formatter);
+
+        return offsetDateTime.format(formatter);
     }
 }

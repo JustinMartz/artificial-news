@@ -4,7 +4,7 @@ import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.repositories.ArticlePhotoRepository;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class LoadDatabase {
     private List<Article> buildTestArticles(List<ArticlePhoto> testPhotos) {
         Article article1 = new Article(), article2 = new Article(), article3 = new Article();
 
-        article1.setCreatedAt(LocalDateTime.parse("2025-10-12T08:16:54.519613"));
+        article1.setCreatedAt(OffsetDateTime.parse("2025-10-12T08:16:54.519613Z"));
         article1.setDateline("October 12, 2025 • 8:16 AM");
         article1.setHeadline(
                 "Giraffes Take to the Streets in Seattle's Most Whimsical Marathon Yet");
@@ -74,7 +74,7 @@ public class LoadDatabase {
                     + " with hope.");
         article1.setArticlePhoto(testPhotos.get(0));
 
-        article2.setCreatedAt(LocalDateTime.parse("2025-10-11T08:38:39.969026"));
+        article2.setCreatedAt(OffsetDateTime.parse("2025-10-11T08:38:39.969026Z"));
         article2.setDateline("October 11, 2025 • 8:38 AM");
         article2.setHeadline("Ghostly Delights Await at Denver's Haunted Cupcake Festival");
         article2.setAuthor("Samantha Lin");
@@ -106,7 +106,7 @@ public class LoadDatabase {
                     + " unforgettable celebration of both the spooky and the sweet.");
         article2.setArticlePhoto(testPhotos.get(1));
 
-        article3.setCreatedAt(LocalDateTime.parse("2025-10-10T08:43:26.153504"));
+        article3.setCreatedAt(OffsetDateTime.parse("2025-10-10T08:43:26.153504Z"));
         article3.setDateline("October 10, 2025 • 8:43 AM");
         article3.setHeadline("Mystical Quilts Draw Bidders to Savannah's Eerie Auction");
         article3.setAuthor("Lila Ellis");

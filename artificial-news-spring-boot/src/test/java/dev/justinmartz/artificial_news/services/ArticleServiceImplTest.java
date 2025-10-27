@@ -15,16 +15,14 @@ import static org.mockito.Mockito.when;
 import dev.justinmartz.artificial_news.entities.Article;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
+import dev.justinmartz.artificial_news.models.ArticleDto;
 import dev.justinmartz.artificial_news.models.ArticlePhotoDto;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,15 +46,6 @@ public class ArticleServiceImplTest {
 
     @InjectMocks private ArticleServiceImpl articleService;
 
-    @BeforeEach
-    void setup() {}
-
-    private static final String ARTICLE_MAP_KEY_HEADLINE = "headline";
-    private static final String ARTICLE_MAP_KEY_AUTHOR = "author";
-    private static final String ARTICLE_MAP_KEY_ARTICLE_BODY = "articleBody";
-    private static final String ARTICLE_MAP_KEY_ARTICLE_PHOTO_CAPTION = "articlePhotoCaption";
-    private static final String ARTICLE_MAP_KEY_ARTICLE_PHOTO_PHOTOGRAPHER =
-            "articlePhotoPhotographer";
     private static final String EXCEPTION_MESSAGE =
             "Error creating article in createArticle(): Cannot save incomplete article.";
     private static final String ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE =
@@ -65,14 +54,14 @@ public class ArticleServiceImplTest {
     @Test
     void givenCreateArticle_whenCalled_thenCallsAiServiceMethods() {
         String testTopic = UUID.randomUUID().toString();
-        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
+        ArticleDto testArticleDto = buildCompleteArticleDto(true);
         ImageResponse mockImageResponse = buildTestImageResponse();
 
         when(mockAiService.generateTopic()).thenReturn(testTopic);
-        when(mockAiService.generateText(testTopic)).thenReturn(testArticleMap);
-        when(mockAiService.generateAuthorImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR)))
+        when(mockAiService.generateText(testTopic)).thenReturn(testArticleDto);
+        when(mockAiService.generateAuthorImageAsync(testArticleDto.getAuthor()))
                 .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
-        when(mockAiService.generateArticleImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE)))
+        when(mockAiService.generateArticleImageAsync(testArticleDto.getHeadline()))
                 .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
         when(mockImageStorageService.saveAuthorPhoto(any(), anyString()))
                 .thenReturn(UUID.randomUUID().toString());
@@ -83,18 +72,16 @@ public class ArticleServiceImplTest {
 
         verify(mockAiService).generateTopic();
         verify(mockAiService).generateText(testTopic);
-        verify(mockAiService).generateAuthorImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR));
-        verify(mockAiService)
-                .generateArticleImageAsync(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE));
+        verify(mockAiService).generateAuthorImageAsync(testArticleDto.getAuthor());
+        verify(mockAiService).generateArticleImageAsync(testArticleDto.getHeadline());
         assertNotNull(article);
-        assertEquals(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE), article.getHeadline());
-        assertEquals(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR), article.getAuthor());
-        assertEquals(testArticleMap.get(ARTICLE_MAP_KEY_ARTICLE_BODY), article.getArticleBody());
+        assertEquals(testArticleDto.getHeadline(), article.getHeadline());
+        assertEquals(testArticleDto.getAuthor(), article.getAuthor());
+        assertEquals(testArticleDto.getArticleBody(), article.getArticleBody());
         assertEquals(
-                testArticleMap.get(ARTICLE_MAP_KEY_ARTICLE_PHOTO_CAPTION),
-                article.getArticlePhoto().getCaption());
+                testArticleDto.getArticlePhotoCaption(), article.getArticlePhoto().getCaption());
         assertEquals(
-                testArticleMap.get(ARTICLE_MAP_KEY_ARTICLE_PHOTO_PHOTOGRAPHER),
+                testArticleDto.getArticlePhotoPhotographer(),
                 article.getArticlePhoto().getPhotographer());
     }
 
@@ -105,33 +92,29 @@ public class ArticleServiceImplTest {
                 new ArticlePhotoDto()
                         .setFullsize(UUID.randomUUID().toString())
                         .setThumbnail(UUID.randomUUID().toString());
-        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
+        ArticleDto testArticleDto = buildCompleteArticleDto(true);
         ImageResponse mockAuthorImageResponse = buildTestImageResponse();
         ImageResponse mockArticleImageResponse = buildTestImageResponse();
 
         when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
-        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateText(any())).thenReturn(testArticleDto);
         when(mockAiService.generateAuthorImageAsync(any()))
                 .thenReturn(CompletableFuture.completedFuture(mockAuthorImageResponse));
         when(mockAiService.generateArticleImageAsync(any()))
                 .thenReturn(CompletableFuture.completedFuture(mockArticleImageResponse));
         when(mockImageStorageService.saveAuthorPhoto(
-                        eq(mockAuthorImageResponse),
-                        eq(testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR))))
+                        eq(mockAuthorImageResponse), eq(testArticleDto.getAuthor())))
                 .thenReturn(authorPhotoFilename);
         when(mockImageStorageService.saveArticlePhoto(
-                        eq(mockArticleImageResponse),
-                        eq(testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE))))
+                        eq(mockArticleImageResponse), eq(testArticleDto.getHeadline())))
                 .thenReturn(testArticlePhotoDto);
 
         Article article = articleService.createArticle();
 
         verify(mockImageStorageService)
-                .saveArticlePhoto(
-                        mockArticleImageResponse, testArticleMap.get(ARTICLE_MAP_KEY_HEADLINE));
+                .saveArticlePhoto(mockArticleImageResponse, testArticleDto.getHeadline());
         verify(mockImageStorageService)
-                .saveAuthorPhoto(
-                        mockAuthorImageResponse, testArticleMap.get(ARTICLE_MAP_KEY_AUTHOR));
+                .saveAuthorPhoto(mockAuthorImageResponse, testArticleDto.getAuthor());
         assertNotNull(article);
         assertEquals(testArticlePhotoDto.getFullsize(), article.getArticlePhoto().getFullsize());
         assertEquals(testArticlePhotoDto.getThumbnail(), article.getArticlePhoto().getThumbnail());
@@ -140,11 +123,11 @@ public class ArticleServiceImplTest {
 
     @Test
     void givenCreateArticle_whenArticleIsFullyInitialized_thenSavesArticle() {
-        Map<String, String> testArticleMap = buildCompleteArticleMap(true);
+        ArticleDto testArticleDto = buildCompleteArticleDto(true);
         ImageResponse mockImageResponse = buildTestImageResponse();
 
         when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
-        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateText(any())).thenReturn(testArticleDto);
         when(mockAiService.generateAuthorImageAsync(any()))
                 .thenReturn(CompletableFuture.completedFuture(mockImageResponse));
         when(mockAiService.generateArticleImageAsync(any()))
@@ -163,10 +146,10 @@ public class ArticleServiceImplTest {
 
     @Test
     void givenCreateArticle_whenArticleIsNotFullyInitialized_thenThrowsException() {
-        Map<String, String> testArticleMap = buildCompleteArticleMap(false);
+        ArticleDto testArticleDto = buildCompleteArticleDto(false);
 
         when(mockAiService.generateTopic()).thenReturn(UUID.randomUUID().toString());
-        when(mockAiService.generateText(any())).thenReturn(testArticleMap);
+        when(mockAiService.generateText(any())).thenReturn(testArticleDto);
         when(mockAiService.generateAuthorImageAsync(any()))
                 .thenReturn(CompletableFuture.completedFuture(null));
         when(mockAiService.generateArticleImageAsync(any()))
@@ -221,17 +204,16 @@ public class ArticleServiceImplTest {
         assertSame(articles, pagedArticles);
     }
 
-    private Map<String, String> buildCompleteArticleMap(boolean isComplete) {
-        Map<String, String> testArticleData = new HashMap<>();
-        testArticleData.put(ARTICLE_MAP_KEY_HEADLINE, UUID.randomUUID().toString());
-        testArticleData.put(
-                ARTICLE_MAP_KEY_AUTHOR, isComplete ? UUID.randomUUID().toString() : null);
-        testArticleData.put(ARTICLE_MAP_KEY_ARTICLE_BODY, UUID.randomUUID().toString());
-        testArticleData.put(ARTICLE_MAP_KEY_ARTICLE_PHOTO_CAPTION, UUID.randomUUID().toString());
-        testArticleData.put(
-                ARTICLE_MAP_KEY_ARTICLE_PHOTO_PHOTOGRAPHER, UUID.randomUUID().toString());
+    private ArticleDto buildCompleteArticleDto(boolean isComplete) {
+        ArticleDto articleDto = new ArticleDto();
+        articleDto
+                .setHeadline(UUID.randomUUID().toString())
+                .setAuthor(isComplete ? UUID.randomUUID().toString() : null)
+                .setArticleBody(UUID.randomUUID().toString())
+                .setArticlePhotoCaption(UUID.randomUUID().toString())
+                .setArticlePhotoPhotographer(UUID.randomUUID().toString());
 
-        return testArticleData;
+        return articleDto;
     }
 
     private ImageResponse buildTestImageResponse() {
@@ -245,8 +227,6 @@ public class ArticleServiceImplTest {
         articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
         articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
 
-        Page<Article> articlePage = new PageImpl<>(articles);
-
-        return articlePage;
+        return new PageImpl<>(articles);
     }
 }

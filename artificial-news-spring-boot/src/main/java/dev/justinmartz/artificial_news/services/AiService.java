@@ -1,7 +1,7 @@
 /* (C)2025 */
 package dev.justinmartz.artificial_news.services;
 
-import java.util.Map;
+import dev.justinmartz.artificial_news.models.ArticleDto;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.ai.image.ImageResponse;
 
@@ -12,5 +12,5 @@ public interface AiService {
 
     String generateTopic();
 
-    Map<String, String> generateText(String topic);
+    ArticleDto generateText(String topic);
 }
