@@ -23,6 +23,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final AiService aiService;
     private final ImageStorageService imageStorageService;
 
+    private static final Integer DURATION_DIVISOR = 1_000_000;
+
     public ArticleServiceImpl(
             ArticleRepository articleRepository,
             AiService aiService,
@@ -34,6 +36,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article createArticle() {
+        Long startTime = System.nanoTime();
+
         String topic = aiService.generateTopic();
         ArticleDto articleDto = aiService.generateText(topic);
 
@@ -46,13 +50,17 @@ public class ArticleServiceImpl implements ArticleService {
         ImageResponse authorPhotoResponse = authorPhotoFuture.join();
         ImageResponse articlePhotoResponse = articlePhotoFuture.join();
 
-        String authorPhotoFilename =
-                imageStorageService.saveAuthorPhoto(authorPhotoResponse, articleDto.getAuthor());
+        articleDto.setAuthorPhotoFilename(
+                imageStorageService.saveAuthorPhoto(authorPhotoResponse, articleDto.getAuthor()));
         ArticlePhotoDto articlePhotoDto =
                 imageStorageService.saveArticlePhoto(
                         articlePhotoResponse, articleDto.getHeadline());
 
-        Article article = buildArticleFromDtos(articleDto, authorPhotoFilename, articlePhotoDto);
+        Long endTime = System.nanoTime();
+        Long durationInMillis = (endTime - startTime) / DURATION_DIVISOR;
+        articleDto.setCreationTime(durationInMillis);
+
+        Article article = buildArticleFromDtos(articleDto, articlePhotoDto);
 
         if (article.isFullyInitialized()) {
             articleRepository.save(article);
@@ -73,8 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(pageable);
     }
 
-    private Article buildArticleFromDtos(
-            ArticleDto articleDto, String authorPhotoFilename, ArticlePhotoDto articlePhotoDto) {
+    private Article buildArticleFromDtos(ArticleDto articleDto, ArticlePhotoDto articlePhotoDto) {
         ArticlePhoto articlePhoto = new ArticlePhoto();
         articlePhoto
                 .setCaption(
@@ -96,10 +103,12 @@ public class ArticleServiceImpl implements ArticleService {
                         Objects.isNull(articleDto.getArticleBody())
                                 ? null
                                 : articleDto.getArticleBody())
-                .setAuthorPhoto(authorPhotoFilename)
+                .setAuthorPhoto(articleDto.getAuthorPhotoFilename())
                 .setArticlePhoto(articlePhoto)
                 .setCreatedAt(OffsetDateTime.now())
-                .setDateline(formatUTCtoDateline(OffsetDateTime.now()));
+                .setDateline(formatUTCtoDateline(OffsetDateTime.now()))
+                .setProvider(articleDto.getProvider())
+                .setModel(articleDto.getModel());
 
         return article;
     }

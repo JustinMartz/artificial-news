@@ -46,6 +46,7 @@ public class Article {
 
     private String model;
 
+    @Column(name = "creation_time")
     private Long creationTime;
 
     public Article() {}
@@ -132,9 +133,35 @@ public class Article {
         return this;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+
+    public Article setProvider(String provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public Article setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    public Long getCreationTime() {
+        return creationTime;
+    }
+
+    public Article setCreationTime(Long creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (!(o instanceof Article article)) return false;
         return Objects.equals(id, article.id)
                 && Objects.equals(createdAt, article.createdAt)
@@ -143,40 +170,25 @@ public class Article {
                 && Objects.equals(author, article.author)
                 && Objects.equals(authorPhoto, article.authorPhoto)
                 && Objects.equals(articleBody, article.articleBody)
-                && Objects.equals(articlePhoto, article.articlePhoto);
+                && Objects.equals(articlePhoto, article.articlePhoto)
+                && Objects.equals(provider, article.provider)
+                && Objects.equals(model, article.model)
+                && Objects.equals(creationTime, article.creationTime);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                id, createdAt, dateline, headline, author, authorPhoto, articleBody, articlePhoto);
-    }
-
-    @Override
-    public String toString() {
-        return "Article{"
-                + "id="
-                + id
-                + ", createdAt="
-                + createdAt
-                + ", dateline='"
-                + dateline
-                + '\''
-                + ", headline='"
-                + headline
-                + '\''
-                + ", author='"
-                + author
-                + '\''
-                + ", authorPhoto='"
-                + authorPhoto
-                + '\''
-                + ", articleBody='"
-                + articleBody
-                + '\''
-                + ", articlePhoto='"
-                + articlePhoto
-                + '\''
-                + '}';
+                id,
+                createdAt,
+                dateline,
+                headline,
+                author,
+                authorPhoto,
+                articleBody,
+                articlePhoto,
+                provider,
+                model,
+                creationTime);
     }
 }

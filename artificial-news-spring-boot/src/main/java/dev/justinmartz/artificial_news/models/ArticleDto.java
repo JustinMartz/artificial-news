@@ -15,6 +15,10 @@ public class ArticleDto {
 
     private String articlePhotoPhotographer;
 
+    private String authorPhotoFilename;
+
+    private Long creationTime;
+
     public String getProvider() {
         return provider;
     }
@@ -75,6 +79,24 @@ public class ArticleDto {
 
     public ArticleDto setArticlePhotoPhotographer(String articlePhotoPhotographer) {
         this.articlePhotoPhotographer = articlePhotoPhotographer;
+        return this;
+    }
+
+    public String getAuthorPhotoFilename() {
+        return authorPhotoFilename;
+    }
+
+    public ArticleDto setAuthorPhotoFilename(String authorPhotoFilename) {
+        this.authorPhotoFilename = authorPhotoFilename;
+        return this;
+    }
+
+    public Long getCreationTime() {
+        return creationTime;
+    }
+
+    public ArticleDto setCreationTime(Long creationTime) {
+        this.creationTime = creationTime;
         return this;
     }
 }
