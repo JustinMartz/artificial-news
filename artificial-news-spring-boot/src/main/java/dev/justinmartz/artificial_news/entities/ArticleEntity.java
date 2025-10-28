@@ -14,9 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Article")
 @Table(name = "article")
-public class Article {
+public class ArticleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "UUID")
@@ -49,7 +49,7 @@ public class Article {
     @Column(name = "creation_time")
     private Long creationTime;
 
-    public Article() {}
+    public ArticleEntity() {}
 
     public boolean isFullyInitialized() {
         return this.createdAt != null
@@ -65,7 +65,7 @@ public class Article {
         return id;
     }
 
-    public Article setId(UUID id) {
+    public ArticleEntity setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -74,7 +74,7 @@ public class Article {
         return createdAt;
     }
 
-    public Article setCreatedAt(OffsetDateTime createdAt) {
+    public ArticleEntity setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -83,7 +83,7 @@ public class Article {
         return dateline;
     }
 
-    public Article setDateline(String dateline) {
+    public ArticleEntity setDateline(String dateline) {
         this.dateline = dateline;
         return this;
     }
@@ -92,7 +92,7 @@ public class Article {
         return headline;
     }
 
-    public Article setHeadline(String headline) {
+    public ArticleEntity setHeadline(String headline) {
         this.headline = headline;
         return this;
     }
@@ -101,7 +101,7 @@ public class Article {
         return author;
     }
 
-    public Article setAuthor(String author) {
+    public ArticleEntity setAuthor(String author) {
         this.author = author;
         return this;
     }
@@ -110,7 +110,7 @@ public class Article {
         return authorPhoto;
     }
 
-    public Article setAuthorPhoto(String authorPhoto) {
+    public ArticleEntity setAuthorPhoto(String authorPhoto) {
         this.authorPhoto = authorPhoto;
         return this;
     }
@@ -119,7 +119,7 @@ public class Article {
         return articleBody;
     }
 
-    public Article setArticleBody(String articleBody) {
+    public ArticleEntity setArticleBody(String articleBody) {
         this.articleBody = articleBody;
         return this;
     }
@@ -128,7 +128,7 @@ public class Article {
         return articlePhoto;
     }
 
-    public Article setArticlePhoto(ArticlePhoto articlePhoto) {
+    public ArticleEntity setArticlePhoto(ArticlePhoto articlePhoto) {
         this.articlePhoto = articlePhoto;
         return this;
     }
@@ -137,7 +137,7 @@ public class Article {
         return provider;
     }
 
-    public Article setProvider(String provider) {
+    public ArticleEntity setProvider(String provider) {
         this.provider = provider;
         return this;
     }
@@ -146,7 +146,7 @@ public class Article {
         return model;
     }
 
-    public Article setModel(String model) {
+    public ArticleEntity setModel(String model) {
         this.model = model;
         return this;
     }
@@ -155,25 +155,25 @@ public class Article {
         return creationTime;
     }
 
-    public Article setCreationTime(Long creationTime) {
+    public ArticleEntity setCreationTime(Long creationTime) {
         this.creationTime = creationTime;
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Article article)) return false;
-        return Objects.equals(id, article.id)
-                && Objects.equals(createdAt, article.createdAt)
-                && Objects.equals(dateline, article.dateline)
-                && Objects.equals(headline, article.headline)
-                && Objects.equals(author, article.author)
-                && Objects.equals(authorPhoto, article.authorPhoto)
-                && Objects.equals(articleBody, article.articleBody)
-                && Objects.equals(articlePhoto, article.articlePhoto)
-                && Objects.equals(provider, article.provider)
-                && Objects.equals(model, article.model)
-                && Objects.equals(creationTime, article.creationTime);
+        if (!(o instanceof ArticleEntity articleEntity)) return false;
+        return Objects.equals(id, articleEntity.id)
+                && Objects.equals(createdAt, articleEntity.createdAt)
+                && Objects.equals(dateline, articleEntity.dateline)
+                && Objects.equals(headline, articleEntity.headline)
+                && Objects.equals(author, articleEntity.author)
+                && Objects.equals(authorPhoto, articleEntity.authorPhoto)
+                && Objects.equals(articleBody, articleEntity.articleBody)
+                && Objects.equals(articlePhoto, articleEntity.articlePhoto)
+                && Objects.equals(provider, articleEntity.provider)
+                && Objects.equals(model, articleEntity.model)
+                && Objects.equals(creationTime, articleEntity.creationTime);
     }
 
     @Override

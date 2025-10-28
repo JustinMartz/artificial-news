@@ -1,14 +1,15 @@
 package dev.justinmartz.artificial_news.services;
 
-import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ArticleService {
-    Article createArticle();
+    ArticleEntity createArticle();
 
-    Article getArticleById(UUID id);
+    ArticleEntity getArticleById(UUID id);
 
-    Page<Article> getPagedArticles(Pageable p);
+    Page<ArticleEntity> getPagedArticles(Pageable p);
 }

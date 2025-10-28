@@ -92,8 +92,8 @@ public class OpenAiServiceImpl implements AiService {
     @Override
     public CompletableFuture<ImageResponse> generateArticleImageAsync(String headline) {
         String prompt =
-                "Generate a color photograph to accompany a news article."
-                        + "The headline of the article is "
+                "Generate a color photograph to accompany a news articleEntity."
+                        + "The headline of the articleEntity is "
                         + headline
                         + ". "
                         + """
@@ -131,11 +131,11 @@ public class OpenAiServiceImpl implements AiService {
 
     @Override
     public String generateTopic() {
-        String userText = "Generate one topic of interest to write a news article about.";
+        String userText = "Generate one topic of interest to write a news articleEntity about.";
         Message userMessage = new UserMessage(userText);
         String systemText =
                 """
-                You are a helpful AI assistant that generates one interesting news article topic.
+                You are a helpful AI assistant that generates one interesting news articleEntity topic.
                 The topic should be a one, two, or three-word phrase that succinctly defines a newsworthy event somewhere in America.
                 The topic should be specific and should include specific adjectives and city names.
                 The topic can be weird and have no prior context in real life.
@@ -160,24 +160,24 @@ public class OpenAiServiceImpl implements AiService {
         ArticleDto articleDto = new ArticleDto();
         String userText =
                 """
-                Give me a news article three paragraphs in length about {topic}.
-                The article length must be three paragraphs. Article text can include quotes from named people and
+                Give me a news articleEntity three paragraphs in length about {topic}.
+                The articleEntity length must be three paragraphs. Article text can include quotes from named people and
                   answer the "what", "where", "when", "who", and "why" of {topic}.
-                The article must be three paragraphs in length.
+                The articleEntity must be three paragraphs in length.
                 """;
         Message userMessage = new UserMessage(userText);
         String systemText =
                 """
                 You are a helpful AI assistant that is required to fulfill the conditions of the prompt.
-                You should generate a headline, a name for the writer, and three paragraphs of an article about {topic}.
-                You should also generate a one-sentence photograph caption based on the article text and topic.
+                You should generate a headline, a name for the writer, and three paragraphs of an articleEntity about {topic}.
+                You should also generate a one-sentence photograph caption based on the articleEntity text and topic.
                 You should also generate a first and last name of a photographer.
                 Possibilities of writer's name include any gender and any ethnic background.
                 The headline should be catchy but professional.
                 The writing should be entertaining and informative in the style of the New York Times.
                 Write your output for the writer's name in JSON with a key called "author" for the writer.
                 Write your output for the headline in JSON with a key called "headline".
-                Write your output for all three article paragraphs in the same key called "articleBody". There should only be one "articleBody" key in the JSON output.
+                Write your output for all three articleEntity paragraphs in the same key called "articleBody". There should only be one "articleBody" key in the JSON output.
                 Write your output for the photograph caption in a key called "articlePhotoCaption".
                 Write your output for the photographer name in a key called "articlePhotoPhotographer".
                 Paragraphs should be separated by an escaped newline character but all contained within the same string.

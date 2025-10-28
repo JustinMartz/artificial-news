@@ -1,6 +1,6 @@
 package dev.justinmartz.artificial_news.services;
 
-import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article createArticle() {
+    public ArticleEntity createArticle() {
         Long startTime = System.nanoTime();
 
         String topic = aiService.generateTopic();
@@ -60,11 +60,11 @@ public class ArticleServiceImpl implements ArticleService {
         Long durationInMillis = (endTime - startTime) / DURATION_DIVISOR;
         articleDto.setCreationTime(durationInMillis);
 
-        Article article = buildArticleFromDtos(articleDto, articlePhotoDto);
+        ArticleEntity articleEntity = buildArticleFromDtos(articleDto, articlePhotoDto);
 
-        if (article.isFullyInitialized()) {
-            articleRepository.save(article);
-            return article;
+        if (articleEntity.isFullyInitialized()) {
+            articleRepository.save(articleEntity);
+            return articleEntity;
         } else {
             throw new ArticleNotCreatedException(
                     "createArticle(): Cannot save incomplete article.", new RuntimeException());
@@ -72,16 +72,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticleById(UUID id) {
+    public ArticleEntity getArticleById(UUID id) {
         return articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     @Override
-    public Page<Article> getPagedArticles(Pageable pageable) {
+    public Page<ArticleEntity> getPagedArticles(Pageable pageable) {
         return articleRepository.findAll(pageable);
     }
 
-    private Article buildArticleFromDtos(ArticleDto articleDto, ArticlePhotoDto articlePhotoDto) {
+    private ArticleEntity buildArticleFromDtos(ArticleDto articleDto, ArticlePhotoDto articlePhotoDto) {
         ArticlePhoto articlePhoto = new ArticlePhoto();
         articlePhoto
                 .setCaption(
@@ -95,8 +95,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .setFullsize(articlePhotoDto.getFullsize())
                 .setThumbnail(articlePhotoDto.getThumbnail());
 
-        Article article = new Article();
-        article.setHeadline(
+        ArticleEntity articleEntity = new ArticleEntity();
+        articleEntity.setHeadline(
                         Objects.isNull(articleDto.getHeadline()) ? null : articleDto.getHeadline())
                 .setAuthor(Objects.isNull(articleDto.getAuthor()) ? null : articleDto.getAuthor())
                 .setArticleBody(
@@ -110,7 +110,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .setProvider(articleDto.getProvider())
                 .setModel(articleDto.getModel());
 
-        return article;
+        return articleEntity;
     }
 
     private String formatUTCtoDateline(OffsetDateTime offsetDateTime) {

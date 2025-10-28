@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import dev.justinmartz.artificial_news.models.ArticleDto;
@@ -68,21 +68,21 @@ public class ArticleServiceImplTest {
         when(mockImageStorageService.saveArticlePhoto(any(), anyString()))
                 .thenReturn(new ArticlePhotoDto());
 
-        Article article = articleService.createArticle();
+        ArticleEntity articleEntity = articleService.createArticle();
 
         verify(mockAiService).generateTopic();
         verify(mockAiService).generateText(testTopic);
         verify(mockAiService).generateAuthorImageAsync(testArticleDto.getAuthor());
         verify(mockAiService).generateArticleImageAsync(testArticleDto.getHeadline());
-        assertNotNull(article);
-        assertEquals(testArticleDto.getHeadline(), article.getHeadline());
-        assertEquals(testArticleDto.getAuthor(), article.getAuthor());
-        assertEquals(testArticleDto.getArticleBody(), article.getArticleBody());
+        assertNotNull(articleEntity);
+        assertEquals(testArticleDto.getHeadline(), articleEntity.getHeadline());
+        assertEquals(testArticleDto.getAuthor(), articleEntity.getAuthor());
+        assertEquals(testArticleDto.getArticleBody(), articleEntity.getArticleBody());
         assertEquals(
-                testArticleDto.getArticlePhotoCaption(), article.getArticlePhoto().getCaption());
+                testArticleDto.getArticlePhotoCaption(), articleEntity.getArticlePhoto().getCaption());
         assertEquals(
                 testArticleDto.getArticlePhotoPhotographer(),
-                article.getArticlePhoto().getPhotographer());
+                articleEntity.getArticlePhoto().getPhotographer());
     }
 
     @Test
@@ -109,16 +109,16 @@ public class ArticleServiceImplTest {
                         eq(mockArticleImageResponse), eq(testArticleDto.getHeadline())))
                 .thenReturn(testArticlePhotoDto);
 
-        Article article = articleService.createArticle();
+        ArticleEntity articleEntity = articleService.createArticle();
 
         verify(mockImageStorageService)
                 .saveArticlePhoto(mockArticleImageResponse, testArticleDto.getHeadline());
         verify(mockImageStorageService)
                 .saveAuthorPhoto(mockAuthorImageResponse, testArticleDto.getAuthor());
-        assertNotNull(article);
-        assertEquals(testArticlePhotoDto.getFullsize(), article.getArticlePhoto().getFullsize());
-        assertEquals(testArticlePhotoDto.getThumbnail(), article.getArticlePhoto().getThumbnail());
-        assertEquals(authorPhotoFilename, article.getAuthorPhoto());
+        assertNotNull(articleEntity);
+        assertEquals(testArticlePhotoDto.getFullsize(), articleEntity.getArticlePhoto().getFullsize());
+        assertEquals(testArticlePhotoDto.getThumbnail(), articleEntity.getArticlePhoto().getThumbnail());
+        assertEquals(authorPhotoFilename, articleEntity.getAuthorPhoto());
     }
 
     @Test
@@ -137,11 +137,11 @@ public class ArticleServiceImplTest {
         when(mockImageStorageService.saveArticlePhoto(any(), anyString()))
                 .thenReturn(new ArticlePhotoDto());
 
-        Article article = articleService.createArticle();
+        ArticleEntity articleEntity = articleService.createArticle();
 
-        verify(mockArticleRepository).save(article);
-        assertNotNull(article);
-        assertTrue(article.isFullyInitialized());
+        verify(mockArticleRepository).save(articleEntity);
+        assertNotNull(articleEntity);
+        assertTrue(articleEntity.isFullyInitialized());
     }
 
     @Test
@@ -169,14 +169,14 @@ public class ArticleServiceImplTest {
     @Test
     void givenGetArticleById_whenArticleFound_thenReturnsArticle() {
         UUID uuid = UUID.randomUUID();
-        Article mockArticle = new Article();
+        ArticleEntity mockArticleEntity = new ArticleEntity();
 
-        when(mockArticleRepository.findById(uuid)).thenReturn(Optional.of(mockArticle));
+        when(mockArticleRepository.findById(uuid)).thenReturn(Optional.of(mockArticleEntity));
 
-        Article article = articleService.getArticleById(uuid);
+        ArticleEntity articleEntity = articleService.getArticleById(uuid);
 
         verify(mockArticleRepository).findById(uuid);
-        assertNotNull(article);
+        assertNotNull(articleEntity);
     }
 
     @Test
@@ -194,11 +194,11 @@ public class ArticleServiceImplTest {
     @Test
     void givenGetPagedArticles_whenCalled_thenGetsPagedArticlesFromRepository() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Article> pagedArticles = buildPagedArticles();
+        Page<ArticleEntity> pagedArticles = buildPagedArticles();
 
         when(mockArticleRepository.findAll(pageable)).thenReturn(pagedArticles);
 
-        Page<Article> articles = articleService.getPagedArticles(pageable);
+        Page<ArticleEntity> articles = articleService.getPagedArticles(pageable);
 
         verify(mockArticleRepository).findAll(pageable);
         assertSame(articles, pagedArticles);
@@ -222,11 +222,11 @@ public class ArticleServiceImplTest {
         return new ImageResponse(List.of(generation));
     }
 
-    private Page<Article> buildPagedArticles() {
-        List<Article> articles = new ArrayList<>();
-        articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
-        articles.add(new Article().setAuthor(UUID.randomUUID().toString()));
+    private Page<ArticleEntity> buildPagedArticles() {
+        List<ArticleEntity> articleEntities = new ArrayList<>();
+        articleEntities.add(new ArticleEntity().setAuthor(UUID.randomUUID().toString()));
+        articleEntities.add(new ArticleEntity().setAuthor(UUID.randomUUID().toString()));
 
-        return new PageImpl<>(articles);
+        return new PageImpl<>(articleEntities);
     }
 }

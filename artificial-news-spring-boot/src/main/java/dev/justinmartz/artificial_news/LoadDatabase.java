@@ -1,6 +1,6 @@
 package dev.justinmartz.artificial_news;
 
-import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import dev.justinmartz.artificial_news.entities.ArticlePhoto;
 import dev.justinmartz.artificial_news.repositories.ArticlePhotoRepository;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
@@ -22,27 +22,27 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(
             ArticleRepository articleRepository, ArticlePhotoRepository articlePhotoRepository) {
         List<ArticlePhoto> testPhotos = buildTestPhotos();
-        List<Article> testArticles = buildTestArticles(testPhotos);
+        List<ArticleEntity> testArticleEntities = buildTestArticles(testPhotos);
 
-        articleRepository.saveAll(testArticles);
+        articleRepository.saveAll(testArticleEntities);
 
         return args -> {
-            for (Article article : testArticles) {
-                log.info("Preloading: {}", article.getId());
+            for (ArticleEntity articleEntity : testArticleEntities) {
+                log.info("Preloading: {}", articleEntity.getId());
             }
         };
     }
 
-    private List<Article> buildTestArticles(List<ArticlePhoto> testPhotos) {
-        Article article1 = new Article(), article2 = new Article(), article3 = new Article();
+    private List<ArticleEntity> buildTestArticles(List<ArticlePhoto> testPhotos) {
+        ArticleEntity articleEntity1 = new ArticleEntity(), articleEntity2 = new ArticleEntity(), articleEntity3 = new ArticleEntity();
 
-        article1.setCreatedAt(OffsetDateTime.parse("2025-10-12T08:16:54.519613Z"));
-        article1.setDateline("October 12, 2025 • 8:16 AM");
-        article1.setHeadline(
+        articleEntity1.setCreatedAt(OffsetDateTime.parse("2025-10-12T08:16:54.519613Z"));
+        articleEntity1.setDateline("October 12, 2025 • 8:16 AM");
+        articleEntity1.setHeadline(
                 "Giraffes Take to the Streets in Seattle's Most Whimsical Marathon Yet");
-        article1.setAuthor("Naomi Fernandez");
-        article1.setAuthorPhoto("Naomi-Fernandez-1749392212194.png");
-        article1.setArticleBody(
+        articleEntity1.setAuthor("Naomi Fernandez");
+        articleEntity1.setAuthorPhoto("Naomi-Fernandez-1749392212194.png");
+        articleEntity1.setArticleBody(
                 "In a delightful twist on the traditional marathon, the streets of Seattle played"
                     + " host to the first-ever Whimsical Giraffe Marathon over the weekend."
                     + " Participants, dressed in eye-catching giraffe costumes complete with long"
@@ -72,14 +72,14 @@ public class LoadDatabase {
                     + " optimistic about growing the event in years to come. \"This is just the"
                     + " beginning of a new tradition in Seattle,\" she exclaimed, her eyes gleaming"
                     + " with hope.");
-        article1.setArticlePhoto(testPhotos.get(0));
+        articleEntity1.setArticlePhoto(testPhotos.get(0));
 
-        article2.setCreatedAt(OffsetDateTime.parse("2025-10-11T08:38:39.969026Z"));
-        article2.setDateline("October 11, 2025 • 8:38 AM");
-        article2.setHeadline("Ghostly Delights Await at Denver's Haunted Cupcake Festival");
-        article2.setAuthor("Samantha Lin");
-        article2.setAuthorPhoto("Samantha-Lin-1749393518091.png");
-        article2.setArticleBody(
+        articleEntity2.setCreatedAt(OffsetDateTime.parse("2025-10-11T08:38:39.969026Z"));
+        articleEntity2.setDateline("October 11, 2025 • 8:38 AM");
+        articleEntity2.setHeadline("Ghostly Delights Await at Denver's Haunted Cupcake Festival");
+        articleEntity2.setAuthor("Samantha Lin");
+        articleEntity2.setAuthorPhoto("Samantha-Lin-1749393518091.png");
+        articleEntity2.setArticleBody(
                 "This October, Denver will play host to a spine-tingling affair that promises to be"
                     + " as sweet as it is spectral: the Haunted Cupcake Festival. Set against the"
                     + " backdrop of the city's historic Larimer Square, the festival will kick off"
@@ -104,14 +104,14 @@ public class LoadDatabase {
                     + " such a meaningful purpose,\" Caldwell added. As the festival date"
                     + " approaches, anticipation is building for what promises to be an"
                     + " unforgettable celebration of both the spooky and the sweet.");
-        article2.setArticlePhoto(testPhotos.get(1));
+        articleEntity2.setArticlePhoto(testPhotos.get(1));
 
-        article3.setCreatedAt(OffsetDateTime.parse("2025-10-10T08:43:26.153504Z"));
-        article3.setDateline("October 10, 2025 • 8:43 AM");
-        article3.setHeadline("Mystical Quilts Draw Bidders to Savannah's Eerie Auction");
-        article3.setAuthor("Lila Ellis");
-        article3.setAuthorPhoto("Lila-Ellis-1749393805761.png");
-        article3.setArticleBody(
+        articleEntity3.setCreatedAt(OffsetDateTime.parse("2025-10-10T08:43:26.153504Z"));
+        articleEntity3.setDateline("October 10, 2025 • 8:43 AM");
+        articleEntity3.setHeadline("Mystical Quilts Draw Bidders to Savannah's Eerie Auction");
+        articleEntity3.setAuthor("Lila Ellis");
+        articleEntity3.setAuthorPhoto("Lila-Ellis-1749393805761.png");
+        articleEntity3.setArticleBody(
                 "In the heart of Savannah, Georgia, where history intertwines with mysticism, an"
                     + " unusual auction drew crowds to the city’s historic district this past"
                     + " weekend. The Ghostly Quilt Auction, hosted at the renowned Davenport House"
@@ -140,9 +140,9 @@ public class LoadDatabase {
                     + " behind.\" With all proceeds going to the preservation of local historical"
                     + " sites, the Ghostly Quilt Auction not only captivated imaginations but also"
                     + " contributed to the safeguarding of Savannah's heritage.");
-        article3.setArticlePhoto(testPhotos.get(2));
+        articleEntity3.setArticlePhoto(testPhotos.get(2));
 
-        return List.of(article1, article2, article3);
+        return List.of(articleEntity1, articleEntity2, articleEntity3);
     }
 
     private List<ArticlePhoto> buildTestPhotos() {
