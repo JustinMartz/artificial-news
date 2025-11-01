@@ -155,8 +155,11 @@ public class LoadDatabase {
                 new ArticlePhotoEntity()
                         .setFullsize(
                                 "Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422.png")
-                        .setThumbnail("Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422-thumbnail.png")
-                        .setCaption("Jazz musicians perform underwater at Miami Seaquarium, captivating audiences with a unique musical experience.")
+                        .setThumbnail(
+                                "Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422-thumbnail.png")
+                        .setCaption(
+                                "Jazz musicians perform underwater at Miami Seaquarium, captivating"
+                                        + " audiences with a unique musical experience.")
                         .setPhotographer("Derek Chau");
 
         ArticlePhotoEntity articlePhotoEntity2 =
