@@ -79,7 +79,8 @@ public class ArticleServiceImplTest {
         assertEquals(testArticleDto.getAuthor(), articleEntity.getAuthor());
         assertEquals(testArticleDto.getArticleBody(), articleEntity.getArticleBody());
         assertEquals(
-                testArticleDto.getArticlePhotoCaption(), articleEntity.getArticlePhoto().getCaption());
+                testArticleDto.getArticlePhotoCaption(),
+                articleEntity.getArticlePhoto().getCaption());
         assertEquals(
                 testArticleDto.getArticlePhotoPhotographer(),
                 articleEntity.getArticlePhoto().getPhotographer());
@@ -116,8 +117,10 @@ public class ArticleServiceImplTest {
         verify(mockImageStorageService)
                 .saveAuthorPhoto(mockAuthorImageResponse, testArticleDto.getAuthor());
         assertNotNull(articleEntity);
-        assertEquals(testArticlePhotoDto.getFullsize(), articleEntity.getArticlePhoto().getFullsize());
-        assertEquals(testArticlePhotoDto.getThumbnail(), articleEntity.getArticlePhoto().getThumbnail());
+        assertEquals(
+                testArticlePhotoDto.getFullsize(), articleEntity.getArticlePhoto().getFullsize());
+        assertEquals(
+                testArticlePhotoDto.getThumbnail(), articleEntity.getArticlePhoto().getThumbnail());
         assertEquals(authorPhotoFilename, articleEntity.getAuthorPhoto());
     }
 

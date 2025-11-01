@@ -40,7 +40,7 @@ public class ArticleEntity {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "article_photo_id")
-    private ArticlePhoto articlePhoto;
+    private ArticlePhotoEntity articlePhotoEntity;
 
     private String provider;
 
@@ -58,7 +58,7 @@ public class ArticleEntity {
                 && this.author != null
                 && this.authorPhoto != null
                 && this.articleBody != null
-                && this.articlePhoto != null;
+                && this.articlePhotoEntity != null;
     }
 
     public UUID getId() {
@@ -124,12 +124,12 @@ public class ArticleEntity {
         return this;
     }
 
-    public ArticlePhoto getArticlePhoto() {
-        return articlePhoto;
+    public ArticlePhotoEntity getArticlePhoto() {
+        return articlePhotoEntity;
     }
 
-    public ArticleEntity setArticlePhoto(ArticlePhoto articlePhoto) {
-        this.articlePhoto = articlePhoto;
+    public ArticleEntity setArticlePhoto(ArticlePhotoEntity articlePhotoEntity) {
+        this.articlePhotoEntity = articlePhotoEntity;
         return this;
     }
 
@@ -170,7 +170,7 @@ public class ArticleEntity {
                 && Objects.equals(author, articleEntity.author)
                 && Objects.equals(authorPhoto, articleEntity.authorPhoto)
                 && Objects.equals(articleBody, articleEntity.articleBody)
-                && Objects.equals(articlePhoto, articleEntity.articlePhoto)
+                && Objects.equals(articlePhotoEntity, articleEntity.articlePhotoEntity)
                 && Objects.equals(provider, articleEntity.provider)
                 && Objects.equals(model, articleEntity.model)
                 && Objects.equals(creationTime, articleEntity.creationTime);
@@ -186,7 +186,7 @@ public class ArticleEntity {
                 author,
                 authorPhoto,
                 articleBody,
-                articlePhoto,
+                articlePhotoEntity,
                 provider,
                 model,
                 creationTime);

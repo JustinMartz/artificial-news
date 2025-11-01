@@ -1,7 +1,7 @@
 package dev.justinmartz.artificial_news;
 
 import dev.justinmartz.artificial_news.entities.ArticleEntity;
-import dev.justinmartz.artificial_news.entities.ArticlePhoto;
+import dev.justinmartz.artificial_news.entities.ArticlePhotoEntity;
 import dev.justinmartz.artificial_news.repositories.ArticlePhotoRepository;
 import dev.justinmartz.artificial_news.repositories.ArticleRepository;
 import java.time.OffsetDateTime;
@@ -21,7 +21,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(
             ArticleRepository articleRepository, ArticlePhotoRepository articlePhotoRepository) {
-        List<ArticlePhoto> testPhotos = buildTestPhotos();
+        List<ArticlePhotoEntity> testPhotos = buildTestPhotos();
         List<ArticleEntity> testArticleEntities = buildTestArticles(testPhotos);
 
         articleRepository.saveAll(testArticleEntities);
@@ -33,46 +33,51 @@ public class LoadDatabase {
         };
     }
 
-    private List<ArticleEntity> buildTestArticles(List<ArticlePhoto> testPhotos) {
-        ArticleEntity articleEntity1 = new ArticleEntity(), articleEntity2 = new ArticleEntity(), articleEntity3 = new ArticleEntity();
+    private List<ArticleEntity> buildTestArticles(List<ArticlePhotoEntity> testPhotos) {
+        ArticleEntity articleEntity1 = new ArticleEntity(),
+                articleEntity2 = new ArticleEntity(),
+                articleEntity3 = new ArticleEntity();
 
-        articleEntity1.setCreatedAt(OffsetDateTime.parse("2025-10-12T08:16:54.519613Z"));
-        articleEntity1.setDateline("October 12, 2025 • 8:16 AM");
+        articleEntity1.setCreatedAt(OffsetDateTime.parse("2025-11-01T08:16:54.519613Z"));
+        articleEntity1.setDateline("November 1, 2025 • 4:45 PM");
         articleEntity1.setHeadline(
-                "Giraffes Take to the Streets in Seattle's Most Whimsical Marathon Yet");
-        articleEntity1.setAuthor("Naomi Fernandez");
-        articleEntity1.setAuthorPhoto("Naomi-Fernandez-1749392212194.png");
+                "Diving into the Rhythm: Miami's Unique Underwater Jazz Festival");
+        articleEntity1.setAuthor("Alicia Martinez");
+        articleEntity1.setAuthorPhoto("Alicia-Martinez-1762037109267.png");
         articleEntity1.setArticleBody(
-                "In a delightful twist on the traditional marathon, the streets of Seattle played"
-                    + " host to the first-ever Whimsical Giraffe Marathon over the weekend."
-                    + " Participants, dressed in eye-catching giraffe costumes complete with long"
-                    + " necks and spotted ensembles, ran through the city's most iconic routes,"
-                    + " attracting cheering crowds and curious onlookers. The event, which took"
-                    + " place on Saturday, aimed to combine fitness with fun while raising"
-                    + " awareness for wildlife conservation efforts. \"It's not just about running;"
-                    + " it's about making a statement and bringing joy,\" said event organizer Lisa"
-                    + " Thompson.\n\n"
-                    + "The marathon began at the crack of dawn at the famous Seattle Center,"
-                    + " weaving through the bustling Pike Place Market, and culminating at the"
-                    + " serene shores of Green Lake. Competitors, ranging from serious athletes to"
-                    + " families with young children, embraced the whimsy of the day with gusto."
-                    + " The race was not timed, encouraging participants to enjoy the journey"
-                    + " rather than rush to the finish line. \"I came with my kids, and they"
-                    + " absolutely loved it,\" shared local resident, Mark Johnson, who"
-                    + " participated with his family. \"It's a fantastic way to engage the"
-                    + " community and support a good cause.\"\n\n"
-                    + "Beyond the entertainment value, the Whimsical Giraffe Marathon served a"
-                    + " deeper purpose. A portion of the proceeds was directed towards giraffe"
-                    + " conservation projects in Africa, underscoring the plight of these gentle"
-                    + " giants whose populations have been dwindling due to habitat loss and"
-                    + " poaching. The event highlighted the importance of international cooperation"
-                    + " in wildlife preservation and drew attention to Seattle's commitment to"
-                    + " global conservation efforts. As the day concluded with a festive atmosphere"
-                    + " at the finish line, complete with music and refreshments, Thompson was"
-                    + " optimistic about growing the event in years to come. \"This is just the"
-                    + " beginning of a new tradition in Seattle,\" she exclaimed, her eyes gleaming"
-                    + " with hope.");
+                "In an audacious blend of music and marine life, Miami hosted its first-ever"
+                    + " Underwater Jazz Festival, bringing new meaning to the term 'immersive"
+                    + " experience.' Held at the Miami Seaquarium, the event took place this past"
+                    + " weekend and featured a collection of renowned jazz musicians performing"
+                    + " beneath the waves. Concertgoers donned snorkeling gear and descended into"
+                    + " the aquamarine depths, where they enjoyed the sultry sounds of saxophones"
+                    + " and trumpets while surrounded by colorful schools of fish. \"It's unlike"
+                    + " anything I've ever experienced,\" said festival attendee and jazz"
+                    + " enthusiast Carlos Rivera. \"The music, the setting, it was absolutely"
+                    + " magical.\"\n\n"
+                    + "This groundbreaking event was the brainchild of local event organizer,"
+                    + " Jasmine Lee, who sought to create a festival that would highlight Miami's"
+                    + " unique position as a city between the sea and vibrant cultural artistry."
+                    + " \"I wanted to create an event that not only celebrates the incredible music"
+                    + " scene we have here but also our deep connection to the ocean,\" Lee"
+                    + " explained. Musicians played from waterproof stages encased in glass, a"
+                    + " spectacle that amazed the 500 attendees, many of whom were visiting Miami"
+                    + " specifically for the festival.\n\n"
+                    + "The festival not only promoted the jazz scene but also raised awareness for"
+                    + " marine conservation efforts. Partnering with the Marine Conservation"
+                    + " Institute, the event underscored the importance of preserving Miami's"
+                    + " natural underwater habitats. \"We're thrilled to be part of something"
+                    + " that's both entertaining and meaningful,\" said Sarah Thompson, head of the"
+                    + " organization. \"Combining jazz with the ocean environment reminds us how"
+                    + " precious our marine ecosystems are and how they deserve our collective"
+                    + " efforts to protect them.\" With plans for future festivals already"
+                    + " underway, the Underwater Jazz Festival is set to become a celebrated"
+                    + " fixture of Miami's cultural calendar, merging music with messages of"
+                    + " ecological stewardship.");
         articleEntity1.setArticlePhoto(testPhotos.get(0));
+        articleEntity1.setProvider("OpenAI");
+        articleEntity1.setModel("gpt-4o");
+        articleEntity1.setCreationTime(Long.parseLong("123456"));
 
         articleEntity2.setCreatedAt(OffsetDateTime.parse("2025-10-11T08:38:39.969026Z"));
         articleEntity2.setDateline("October 11, 2025 • 8:38 AM");
@@ -145,29 +150,30 @@ public class LoadDatabase {
         return List.of(articleEntity1, articleEntity2, articleEntity3);
     }
 
-    private List<ArticlePhoto> buildTestPhotos() {
-        ArticlePhoto articlePhoto1 =
-                new ArticlePhoto()
+    private List<ArticlePhotoEntity> buildTestPhotos() {
+        ArticlePhotoEntity articlePhotoEntity1 =
+                new ArticlePhotoEntity()
                         .setFullsize(
-                                "Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png")
-                        .setCaption("Giraffes running around Seattle all crazy in a marathon.")
-                        .setPhotographer("John Smith");
+                                "Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422.png")
+                        .setThumbnail("Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422-thumbnail.png")
+                        .setCaption("Jazz musicians perform underwater at Miami Seaquarium, captivating audiences with a unique musical experience.")
+                        .setPhotographer("Derek Chau");
 
-        ArticlePhoto articlePhoto2 =
-                new ArticlePhoto()
+        ArticlePhotoEntity articlePhotoEntity2 =
+                new ArticlePhotoEntity()
                         .setFullsize(
                                 "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png")
                         .setCaption("Ghost and cupcakes haunt a festival in Denver.")
                         .setPhotographer("Taylor Bugatta");
 
-        ArticlePhoto articlePhoto3 =
-                new ArticlePhoto()
+        ArticlePhotoEntity articlePhotoEntity3 =
+                new ArticlePhotoEntity()
                         .setFullsize(
                                 "Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png")
                         .setCaption(
                                 "An auction house display mystical quilts and potential bidders.")
                         .setPhotographer("Joan Malone");
 
-        return List.of(articlePhoto1, articlePhoto2, articlePhoto3);
+        return List.of(articlePhotoEntity1, articlePhotoEntity2, articlePhotoEntity3);
     }
 }

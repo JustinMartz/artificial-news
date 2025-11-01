@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "article_photo")
-public class ArticlePhoto {
+public class ArticlePhotoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "UUID")
@@ -27,13 +27,13 @@ public class ArticlePhoto {
 
     private String photographer;
 
-    public ArticlePhoto() {}
+    public ArticlePhotoEntity() {}
 
     public UUID getId() {
         return id;
     }
 
-    public ArticlePhoto setId(UUID id) {
+    public ArticlePhotoEntity setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -42,7 +42,7 @@ public class ArticlePhoto {
         return fullsize;
     }
 
-    public ArticlePhoto setFullsize(String fullsize) {
+    public ArticlePhotoEntity setFullsize(String fullsize) {
         this.fullsize = fullsize;
         return this;
     }
@@ -51,7 +51,7 @@ public class ArticlePhoto {
         return thumbnail;
     }
 
-    public ArticlePhoto setThumbnail(String thumbnail) {
+    public ArticlePhotoEntity setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
         return this;
     }
@@ -60,7 +60,7 @@ public class ArticlePhoto {
         return caption;
     }
 
-    public ArticlePhoto setCaption(String caption) {
+    public ArticlePhotoEntity setCaption(String caption) {
         this.caption = caption;
         return this;
     }
@@ -69,14 +69,14 @@ public class ArticlePhoto {
         return photographer;
     }
 
-    public ArticlePhoto setPhotographer(String photographer) {
+    public ArticlePhotoEntity setPhotographer(String photographer) {
         this.photographer = photographer;
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ArticlePhoto that)) return false;
+        if (!(o instanceof ArticlePhotoEntity that)) return false;
         return Objects.equals(id, that.id)
                 && Objects.equals(fullsize, that.fullsize)
                 && Objects.equals(thumbnail, that.thumbnail)

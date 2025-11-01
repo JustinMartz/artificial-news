@@ -1,7 +1,7 @@
 package dev.justinmartz.artificial_news.services;
 
 import dev.justinmartz.artificial_news.entities.ArticleEntity;
-import dev.justinmartz.artificial_news.entities.ArticlePhoto;
+import dev.justinmartz.artificial_news.entities.ArticlePhotoEntity;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotCreatedException;
 import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import dev.justinmartz.artificial_news.models.ArticleDto;
@@ -61,6 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleDto.setCreationTime(durationInMillis);
 
         ArticleEntity articleEntity = buildArticleFromDtos(articleDto, articlePhotoDto);
+        System.out.println("*** article: " + articleEntity);
 
         if (articleEntity.isFullyInitialized()) {
             articleRepository.save(articleEntity);
@@ -81,9 +82,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(pageable);
     }
 
-    private ArticleEntity buildArticleFromDtos(ArticleDto articleDto, ArticlePhotoDto articlePhotoDto) {
-        ArticlePhoto articlePhoto = new ArticlePhoto();
-        articlePhoto
+    private ArticleEntity buildArticleFromDtos(
+            ArticleDto articleDto, ArticlePhotoDto articlePhotoDto) {
+        ArticlePhotoEntity articlePhotoEntity = new ArticlePhotoEntity();
+        articlePhotoEntity
                 .setCaption(
                         Objects.isNull(articleDto.getArticlePhotoCaption())
                                 ? null
@@ -96,7 +98,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .setThumbnail(articlePhotoDto.getThumbnail());
 
         ArticleEntity articleEntity = new ArticleEntity();
-        articleEntity.setHeadline(
+        articleEntity
+                .setHeadline(
                         Objects.isNull(articleDto.getHeadline()) ? null : articleDto.getHeadline())
                 .setAuthor(Objects.isNull(articleDto.getAuthor()) ? null : articleDto.getAuthor())
                 .setArticleBody(
@@ -104,11 +107,12 @@ public class ArticleServiceImpl implements ArticleService {
                                 ? null
                                 : articleDto.getArticleBody())
                 .setAuthorPhoto(articleDto.getAuthorPhotoFilename())
-                .setArticlePhoto(articlePhoto)
+                .setArticlePhoto(articlePhotoEntity)
                 .setCreatedAt(OffsetDateTime.now())
                 .setDateline(formatUTCtoDateline(OffsetDateTime.now()))
                 .setProvider(articleDto.getProvider())
-                .setModel(articleDto.getModel());
+                .setModel(articleDto.getModel())
+                .setCreationTime(articleDto.getCreationTime());
 
         return articleEntity;
     }
