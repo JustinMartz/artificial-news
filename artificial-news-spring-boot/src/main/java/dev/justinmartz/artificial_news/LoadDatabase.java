@@ -77,39 +77,42 @@ public class LoadDatabase {
         articleEntity1.setArticlePhoto(testPhotos.get(0));
         articleEntity1.setProvider("OpenAI");
         articleEntity1.setModel("gpt-4o");
-        articleEntity1.setCreationTime(Long.parseLong("123456"));
+        articleEntity1.setCreationTime(Long.parseLong("24951"));
 
-        articleEntity2.setCreatedAt(OffsetDateTime.parse("2025-10-11T08:38:39.969026Z"));
-        articleEntity2.setDateline("October 11, 2025 • 8:38 AM");
-        articleEntity2.setHeadline("Ghostly Delights Await at Denver's Haunted Cupcake Festival");
-        articleEntity2.setAuthor("Samantha Lin");
-        articleEntity2.setAuthorPhoto("Samantha-Lin-1749393518091.png");
+        articleEntity2.setCreatedAt(OffsetDateTime.parse("2025-11-02T08:38:39.969026Z"));
+        articleEntity2.setDateline("November 1, 2025 • 5:00 PM");
+        articleEntity2.setHeadline("The Mysterious Allure of Orlando’s Haunted Swings");
+        articleEntity2.setAuthor("Jasmine Lee");
+        articleEntity2.setAuthorPhoto("Jasmine-Lee-1762038010879.png");
         articleEntity2.setArticleBody(
-                "This October, Denver will play host to a spine-tingling affair that promises to be"
-                    + " as sweet as it is spectral: the Haunted Cupcake Festival. Set against the"
-                    + " backdrop of the city's historic Larimer Square, the festival will kick off"
-                    + " on October 14th, just in time to get everyone into the Halloween spirit."
-                    + " Organized by the local baking enthusiasts of the Denver Sweet Society, the"
-                    + " event invites both locals and tourists to indulge in a delectable array of"
-                    + " cupcakes while experiencing a few spooky thrills along the way.\n\n"
-                    + "Among the many attractions, the festival will feature a haunted maze crafted"
-                    + " entirely out of cupcake-themed decor, providing a unique twist on the"
-                    + " traditional haunted house experience. \"We wanted to create something fun"
-                    + " and whimsical that would appeal to all ages,\" said Marissa Caldwell, event"
-                    + " coordinator and founder of the Denver Sweet Society. \"Our cupcakes will be"
-                    + " dressed up in their Halloween best, from ghoulish ghosts to decadent dark"
-                    + " chocolate bats. \"Visitors can expect an impressive variety of flavors,"
-                    + " including caramel apple cobweb, black velvet, and even pumpkin spice"
-                    + " specter.\n\n"
-                    + "The festival hopes to draw a large crowd thanks to its combination of"
-                    + " culinary creativity and festive fun. All proceeds from the event will"
-                    + " benefit the Children’s Hospital Colorado, ensuring that the kitchens of"
-                    + " Denver's bakers will not only whip up delightful desserts, but also serve a"
-                    + " good cause. \"It's incredible to see how food can bring people together for"
-                    + " such a meaningful purpose,\" Caldwell added. As the festival date"
-                    + " approaches, anticipation is building for what promises to be an"
-                    + " unforgettable celebration of both the spooky and the sweet.");
+                "In the heart of the vibrant city of Orlando, a unique phenomenon has been drawing"
+                    + " curious thrill-seekers and paranormal enthusiasts alike: the haunted"
+                    + " swings. These seemingly ordinary playground fixtures have become an enigma,"
+                    + " captivating residents and visitors with tales of their supernatural"
+                    + " activity. It all started in the suburb of Lake Eola Heights, where locals"
+                    + " reported the swings moving on their own, even in the absence of any wind, a"
+                    + " curiosity that turned into a legend.\\n"
+                    + "\\n"
+                    + "Michelle Thompson, a mother of two who frequents the playground, recounted"
+                    + " her eerie experience. \\\"It was a quiet afternoon, and my kids were"
+                    + " playing nearby when I noticed the swings just started moving by themselves."
+                    + " I thought someone had given them a push, but no one was around,\\\" she"
+                    + " said, her voice tinged with both excitement and unease. This playground has"
+                    + " since become a hotspot for ghost hunters and tourists hoping to witness the"
+                    + " swings in action.\\n"
+                    + "\\n"
+                    + "Experts offer differing explanations for the haunted swings of Orlando. Dr."
+                    + " Alan Rodriguez, a physicist at the University of Central Florida, suggests"
+                    + " that microclimates and unique wind currents could be responsible. However,"
+                    + " local historian Amanda Green passionately argues that the swings' peculiar"
+                    + " behavior stems from the area's rich history and the spirits of children who"
+                    + " once played there. Whether the phenomenon is a result of science or the"
+                    + " supernatural, the haunted swings have undeniably become a charmingly spooky"
+                    + " staple in Orlando’s cultural tapestry.");
         articleEntity2.setArticlePhoto(testPhotos.get(1));
+        articleEntity1.setProvider("OpenAI");
+        articleEntity1.setModel("gpt-4o");
+        articleEntity1.setCreationTime(Long.parseLong("25957"));
 
         articleEntity3.setCreatedAt(OffsetDateTime.parse("2025-10-10T08:43:26.153504Z"));
         articleEntity3.setDateline("October 10, 2025 • 8:43 AM");
@@ -165,9 +168,13 @@ public class LoadDatabase {
         ArticlePhotoEntity articlePhotoEntity2 =
                 new ArticlePhotoEntity()
                         .setFullsize(
-                                "Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png")
-                        .setCaption("Ghost and cupcakes haunt a festival in Denver.")
-                        .setPhotographer("Taylor Bugatta");
+                                "The-Mysterious-Allure-of-Orlando’s-Haunted-Swings-1762038011011.png")
+                        .setThumbnail(
+                                "The-Mysterious-Allure-of-Orlando’s-Haunted-Swings-1762038011011-thumbnail.png")
+                        .setCaption(
+                                "The haunted swings in Lake Eola Heights sway under the mysterious"
+                                        + " Orlando skies.")
+                        .setPhotographer("Lucas Fernandez");
 
         ArticlePhotoEntity articlePhotoEntity3 =
                 new ArticlePhotoEntity()
