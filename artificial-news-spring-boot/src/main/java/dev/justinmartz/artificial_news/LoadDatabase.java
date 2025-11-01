@@ -80,7 +80,7 @@ public class LoadDatabase {
         articleEntity1.setCreationTime(Long.parseLong("24951"));
 
         articleEntity2.setCreatedAt(OffsetDateTime.parse("2025-11-02T08:38:39.969026Z"));
-        articleEntity2.setDateline("November 1, 2025 • 5:00 PM");
+        articleEntity2.setDateline("November 2, 2025 • 5:00 PM");
         articleEntity2.setHeadline("The Mysterious Allure of Orlando’s Haunted Swings");
         articleEntity2.setAuthor("Jasmine Lee");
         articleEntity2.setAuthorPhoto("Jasmine-Lee-1762038010879.png");
@@ -110,45 +110,46 @@ public class LoadDatabase {
                     + " supernatural, the haunted swings have undeniably become a charmingly spooky"
                     + " staple in Orlando’s cultural tapestry.");
         articleEntity2.setArticlePhoto(testPhotos.get(1));
-        articleEntity1.setProvider("OpenAI");
-        articleEntity1.setModel("gpt-4o");
-        articleEntity1.setCreationTime(Long.parseLong("25957"));
+        articleEntity2.setProvider("OpenAI");
+        articleEntity2.setModel("gpt-4o");
+        articleEntity2.setCreationTime(Long.parseLong("25957"));
 
-        articleEntity3.setCreatedAt(OffsetDateTime.parse("2025-10-10T08:43:26.153504Z"));
-        articleEntity3.setDateline("October 10, 2025 • 8:43 AM");
-        articleEntity3.setHeadline("Mystical Quilts Draw Bidders to Savannah's Eerie Auction");
-        articleEntity3.setAuthor("Lila Ellis");
-        articleEntity3.setAuthorPhoto("Lila-Ellis-1749393805761.png");
+        articleEntity3.setCreatedAt(OffsetDateTime.parse("2025-11-03T08:43:26.153504Z"));
+        articleEntity3.setDateline("November 3, 2025 • 5:15 PM");
+        articleEntity3.setHeadline(
+                "Feathers Fly and Feet Groove at Detroit's Disco Pigeon Festival");
+        articleEntity3.setAuthor("Jamie Rivera");
+        articleEntity3.setAuthorPhoto("Jamie-Rivera-1762038932758.png");
         articleEntity3.setArticleBody(
-                "In the heart of Savannah, Georgia, where history intertwines with mysticism, an"
-                    + " unusual auction drew crowds to the city’s historic district this past"
-                    + " weekend. The Ghostly Quilt Auction, hosted at the renowned Davenport House"
-                    + " Museum, featured an array of handcrafted quilts said to be imbued with"
-                    + " ethereal qualities. Each quilt carries a touch of Savannah's storied past,"
-                    + " reportedly stitched by hands long since gone, and according to local lore,"
-                    + " under the supervision of benevolent spirits. The event held on the eve of"
-                    + " Halloween added an extra layer of intrigue, inviting both skeptics and"
-                    + " believers alike to bid on these textile pieces of history.\n\n"
-                    + "The quilts, painstakingly curated by local historian Margaret Jenkins, are"
-                    + " believed to possess supernatural attributes, with patterns that"
-                    + " occasionally change ever so subtly under moonlight. \"These quilts are more"
-                    + " than just fabric and thread,\" Jenkins explained to attendees, her voice"
-                    + " echoing through the halls once walked by figures of the 19th century."
-                    + " \"They tell the stories of the past, whispers sewn into each stitch.\" The"
-                    + " auction attracted collectors nationwide who sought to own not just a piece"
-                    + " of art, but a fragment of an otherworldly narrative that ties them to the"
-                    + " city's vibrant and often mysterious history.\n\n"
-                    + "Despite the spectral claims, the event served as a boon for Savannah’s"
-                    + " tourism, drawing attendees from all over the U.S. while spotlighting the"
-                    + " city's rich tapestry of folklore. John Michaels, a noted folklorist at the"
-                    + " University of Georgia, expressed admiration for how the event highlighted"
-                    + " Savannah’s unique blend of history and mystery. \"This auction demonstrates"
-                    + " the enduring allure of Savannah's past,\" Michaels noted. \"It's a city"
-                    + " that never forgets its ghosts and celebrates the stories they have left"
-                    + " behind.\" With all proceeds going to the preservation of local historical"
-                    + " sites, the Ghostly Quilt Auction not only captivated imaginations but also"
-                    + " contributed to the safeguarding of Savannah's heritage.");
+                "In an exuberant celebration of music, dance, and feathered flair, the annual Disco"
+                    + " Pigeon Festival swooped into Detroit this past weekend, drawing crowds from"
+                    + " across the Midwest. Held in Hart Plaza, the event, now in its fifth year,"
+                    + " featured a plethora of DJs spinning classic disco tracks, while attendees"
+                    + " dressed in sparkly costumes mingled with live pigeons, all adorned in hues"
+                    + " reminiscent of the grooviest decade. The festival aimed to fuse the city's"
+                    + " rich musical heritage with an unusual appreciation for its urban avian"
+                    + " residents. \n\n"
+                    + "\"We wanted to create a unique experience that captures the essence of"
+                    + " Detroit's music scene while also highlighting the often-overlooked beauty"
+                    + " of pigeons,\" explained festival founder and organizer, Benji Williams."
+                    + " Attendees were treated to impressive dance performances, interactive avian"
+                    + " arts and crafts booths, and even a pigeon parade, where birds strutted"
+                    + " their stuff to the beats of their own soundscape. The spectacle was not"
+                    + " just about entertainment; it served to educate the public on the ecological"
+                    + " importance of pigeons and their role in urban environments.\n\n"
+                    + "The highlight of the festival was undoubtedly the evening's grand finale, a"
+                    + " synchronized light show and dance-off dubbed the \"Pigeon Boogie.\" As"
+                    + " flocks of pigeons took flight, their feathers catching the multicolored"
+                    + " lights, the crowd beneath them danced in jubilant unity. \"It's an"
+                    + " extraordinary scene,\" said Laura Chen, a festival-goer and self-proclaimed"
+                    + " pigeon enthusiast. \"Only in Detroit can you find such a wonderfully weird"
+                    + " and rewarding blend of community, culture, and creativity.\" Plans for next"
+                    + " year's festival are already underway, promising even more avian-themed"
+                    + " surprises for all to enjoy.");
         articleEntity3.setArticlePhoto(testPhotos.get(2));
+        articleEntity3.setProvider("OpenAI");
+        articleEntity3.setModel("gpt-4o");
+        articleEntity3.setCreationTime(Long.parseLong("24020"));
 
         return List.of(articleEntity1, articleEntity2, articleEntity3);
     }
@@ -179,10 +180,13 @@ public class LoadDatabase {
         ArticlePhotoEntity articlePhotoEntity3 =
                 new ArticlePhotoEntity()
                         .setFullsize(
-                                "Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png")
+                                "Feathers-Fly-and-Feet-Groove-at-Detroit's-Disco-Pigeon-Festival-1762038932894.png")
+                        .setThumbnail(
+                                "Feathers-Fly-and-Feet-Groove-at-Detroit's-Disco-Pigeon-Festival-1762038932894-thumbnail.png")
                         .setCaption(
-                                "An auction house display mystical quilts and potential bidders.")
-                        .setPhotographer("Joan Malone");
+                                "Festival-goers dance beneath a dazzling pigeon-themed light show"
+                                        + " at the Disco Pigeon Festival in Detroit.")
+                        .setPhotographer("Samantha Kim");
 
         return List.of(articlePhotoEntity1, articlePhotoEntity2, articlePhotoEntity3);
     }

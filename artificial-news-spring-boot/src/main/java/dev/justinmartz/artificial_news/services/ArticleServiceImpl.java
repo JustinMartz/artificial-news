@@ -61,7 +61,6 @@ public class ArticleServiceImpl implements ArticleService {
         articleDto.setCreationTime(durationInMillis);
 
         ArticleEntity articleEntity = buildArticleFromDtos(articleDto, articlePhotoDto);
-        System.out.println("*** article: " + articleEntity);
 
         if (articleEntity.isFullyInitialized()) {
             articleRepository.save(articleEntity);

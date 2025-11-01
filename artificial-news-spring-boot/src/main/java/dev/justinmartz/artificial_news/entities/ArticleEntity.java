@@ -51,6 +51,7 @@ public class ArticleEntity {
 
     public ArticleEntity() {}
 
+    @JsonIgnore
     public boolean isFullyInitialized() {
         return this.createdAt != null
                 && this.dateline != null
