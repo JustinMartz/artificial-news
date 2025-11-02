@@ -191,7 +191,7 @@ public class ArticleServiceImplTest {
                         ArticleNotFoundException.class, () -> articleService.getArticleById(uuid));
 
         verify(mockArticleRepository).findById(uuid);
-        assertEquals(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE + uuid.toString(), thrown.getMessage());
+        assertEquals(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE + uuid, thrown.getMessage());
     }
 
     @Test
