@@ -2,10 +2,12 @@ package dev.justinmartz.artificial_news.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import dev.justinmartz.artificial_news.entities.ArticlePhotoEntity;
+import dev.justinmartz.artificial_news.exceptions.ArticleNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +30,7 @@ public class ArticleRepositoryTest {
     private static final String ARTICLE_1_HEADLINE =
             "Diving into the Rhythm: Miami's Unique Underwater Jazz Festival";
     private static final String SORT_BY_CREATED_AT = "createdAt";
+    private static final String EXCEPTION_MESSAGE = "Could not find article with id: ";
 
     @Test
     @Sql("classpath:/seed-data.sql")
@@ -62,6 +65,21 @@ public class ArticleRepositoryTest {
         assertNotNull(articleEntity);
         assertEquals(ARTICLE_1_ID, articleEntity.getId());
         assertEquals(ARTICLE_1_HEADLINE, articleEntity.getHeadline());
+    }
+
+    @Test
+    @Sql("classpath:/seed-data.sql")
+    void given_findById_when_passedInvalidId_then_ThrowsException() {
+        UUID id = UUID.randomUUID();
+        ArticleNotFoundException thrown =
+                assertThrows(
+                        ArticleNotFoundException.class,
+                        () ->
+                                articleRepository
+                                        .findById(id)
+                                        .orElseThrow(() -> new ArticleNotFoundException(id)));
+
+        assertEquals(EXCEPTION_MESSAGE + id, thrown.getMessage());
     }
 
     @Test
