@@ -13,7 +13,7 @@ const ArticlePhotoAndCaption = ({
       <img src={imageUrl} alt={articlePhoto?.caption} />
       <span className="text-sm text-gray-400 mt-4">{articlePhoto?.caption}</span>
       <span className="text-xs text-gray-400 mt-4">
-        {articlePhoto?.photographer}/The Artificial News
+        {articlePhoto?.photographer} for The Artificial News
       </span>
     </div>
   );

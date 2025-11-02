@@ -1,6 +1,6 @@
 package dev.justinmartz.artificial_news.controllers;
 
-import dev.justinmartz.artificial_news.entities.Article;
+import dev.justinmartz.artificial_news.entities.ArticleEntity;
 import dev.justinmartz.artificial_news.services.ArticleService;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -22,19 +22,19 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<Article> createNewArticle() {
+    public ResponseEntity<ArticleEntity> createNewArticle() {
         return ResponseEntity.ok().body(articleService.createArticle());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable UUID id) {
-        Article article = articleService.getArticleById(id);
-        return ResponseEntity.ok().body(article);
+    public ResponseEntity<ArticleEntity> getArticleById(@PathVariable UUID id) {
+        ArticleEntity articleEntity = articleService.getArticleById(id);
+        return ResponseEntity.ok().body(articleEntity);
     }
 
     @GetMapping
-    public Page<Article> getAllArticles(Pageable pageable) {
-        Page<Article> articles = articleService.getPagedArticles(pageable);
+    public Page<ArticleEntity> getAllArticles(Pageable pageable) {
+        Page<ArticleEntity> articles = articleService.getPagedArticles(pageable);
 
         return articles;
     }

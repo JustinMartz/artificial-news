@@ -6,13 +6,15 @@ build/
 !**/src/test/**/build/
 /src/main/resources/static/assets/*
 !src/main/resources/static/assets/
-!src/main/resources/static/assets/Ghostly-Delights-Await-at-Denver's-Haunted-Cupcake-Festival-1749393519798.png
-!src/main/resources/static/assets/Giraffes-Take-to-the-Streets-in-Seattle's-Most-Whimsical-Marathon-Yet-1749392214339.png
-!src/main/resources/static/assets/Lila-Ellis-1749393805761.png
-!src/main/resources/static/assets/Naomi-Fernandez-1749392212194.png
-!src/main/resources/static/assets/Samantha-Lin-1749393518091.png
-!src/main/resources/static/assets/Mystical-Quilts-Draw-Bidders-to-Savannah's-Eerie-Auction-1749393804690.png
-
+!src/main/resources/static/assets/Alicia-Martinez-1762037109267.png
+!src/main/resources/static/assets/Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422.png
+!src/main/resources/static/assets/Diving-into-the-Rhythm-Miami's-Unique-Underwater-Jazz-Festival-1762037109422-thumbnail.png
+!src/main/resources/static/assets/Jasmine-Lee-1762038010879.png
+!src/main/resources/static/assets/The-Mysterious-Allure-of-Orlando’s-Haunted-Swings-1762038011011.png
+!src/main/resources/static/assets/The-Mysterious-Allure-of-Orlando’s-Haunted-Swings-1762038011011-thumbnail.png
+!src/main/resources/static/assets/Feathers-Fly-and-Feet-Groove-at-Detroit's-Disco-Pigeon-Festival-1762038932894.png
+!src/main/resources/static/assets/Feathers-Fly-and-Feet-Groove-at-Detroit's-Disco-Pigeon-Festival-1762038932894-thumbnail.png
+!src/main/resources/static/assets/Jamie-Rivera-1762038932758.png
 ### STS ###
 .apt_generated
 .classpath

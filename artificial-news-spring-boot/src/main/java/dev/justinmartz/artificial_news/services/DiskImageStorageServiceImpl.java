@@ -31,7 +31,7 @@ public class DiskImageStorageServiceImpl implements ImageStorageService {
         String filename =
                 author.replaceAll("\\s+", "-") + "-" + System.currentTimeMillis() + ".png";
 
-        saveResizedPhoto(imageResponse, filename, SCALE_FULLSIZE);
+        saveResizedPhoto(imageResponse, filename, SCALE_THUMBNAIL);
 
         return filename;
     }
