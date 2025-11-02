@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Article from '../../models/Article';
 import { useFetchArticleById } from '../../services/articleService';
-// import { useFetchArticleById } from '../services/mockGetArticleService';
 import ArticleHeadline from '../article/ArticleHeadline';
 import ArticleDateline from '../article/ArticleDateline';
 import ArticleBody from '../article/ArticleBody';
