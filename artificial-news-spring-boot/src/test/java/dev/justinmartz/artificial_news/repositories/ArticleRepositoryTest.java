@@ -50,6 +50,7 @@ public class ArticleRepositoryTest {
         assertNotNull(savedArticleEntity);
         assertNotNull(savedArticleEntity.getId());
         assertNotNull(savedArticleEntity.getArticlePhoto().getId());
+        assertEquals(articleEntity.getCreationTime(), savedArticleEntity.getCreationTime());
     }
 
     @Test
