@@ -37,12 +37,10 @@ const Pagination = ({
     default:
       showing = (
         <>
-          <span className="font-bold">
-            {(pageNumber + 1) * (numberOfElements - (numberOfElements - 1))}
-          </span>{' '}
+          <span className="font-bold">{pageNumber * numberOfElements + 1}</span>{' '}
           to{' '}
           <span className="font-bold">
-            {(pageNumber + 1) * numberOfElements}
+            {pageNumber * numberOfElements + numberOfElements}
           </span>
           {' of '}
           <span className="font-bold">{totalElements}</span>
