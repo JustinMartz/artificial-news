@@ -19,7 +19,7 @@ export default function Articles() {
     SORT_BY,
     SORT_DESC
   );
-  const { number, totalElements, numberOfElements, first, last } =
+  const { number, totalElements, numberOfElements, first, last, size } =
     pagedArticlesResult?.data ?? {
       size: 0,
       number: 0,
@@ -70,6 +70,7 @@ export default function Articles() {
         {pagedArticlesResult.isSuccess ? (
           <Pagination
             pageNumber={number}
+            pageSize={size}
             totalElements={totalElements}
             numberOfElements={numberOfElements}
             isFirstPage={first}
