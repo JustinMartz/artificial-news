@@ -2,6 +2,7 @@ import LinkButton from '../LinkButton';
 
 const Pagination = ({
   pageNumber,
+  pageSize,
   totalElements,
   numberOfElements,
   isFirstPage,
@@ -9,6 +10,7 @@ const Pagination = ({
   changePage,
 }: {
   pageNumber: number;
+  pageSize: number;
   totalElements: number;
   numberOfElements: number;
   isFirstPage: boolean;
@@ -37,10 +39,9 @@ const Pagination = ({
     default:
       showing = (
         <>
-          <span className="font-bold">{pageNumber * numberOfElements + 1}</span>{' '}
-          to{' '}
+          <span className="font-bold">{pageNumber * pageSize + 1}</span> to{' '}
           <span className="font-bold">
-            {pageNumber * numberOfElements + numberOfElements}
+            {pageNumber * pageSize + numberOfElements}
           </span>
           {' of '}
           <span className="font-bold">{totalElements}</span>
